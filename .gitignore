@@ -1,7 +1,6 @@
 # Plugin Specific ignores
 default_env.tres
 
-
 # Godot-specific ignores
 .import/
 export.cfg
