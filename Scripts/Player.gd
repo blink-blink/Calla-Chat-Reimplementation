@@ -8,7 +8,7 @@ var move_down = false
 var move_left = false
 var move_right = false
 
-var move_speed = 100
+var move_speed = 4000
 
 func get_input():
 	vel = Vector2()
@@ -24,4 +24,4 @@ func get_input():
 func _physics_process(delta):
 	get_input()
 	vel = vel.normalized()
-	vel = move_and_slide(vel*move_speed)
+	vel = move_and_slide(vel*move_speed*delta)

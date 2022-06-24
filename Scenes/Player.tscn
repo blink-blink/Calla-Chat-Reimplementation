@@ -4,18 +4,18 @@
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=2]
 
 [sub_resource type="CapsuleShape2D" id=1]
-radius = 4.0
+radius = 6.0
 height = 8.0
 
 [node name="Player" type="KinematicBody2D"]
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 1.75, -6.25 )
+position = Vector2( 1.19209e-07, 4.76837e-07 )
 scale = Vector2( 0.05, 0.05 )
 texture = ExtResource( 1 )
+offset = Vector2( 23, 111 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( -0.25, -0.25 )
-rotation = 1.5708
+position = Vector2( 0, 5 )
 shape = SubResource( 1 )
