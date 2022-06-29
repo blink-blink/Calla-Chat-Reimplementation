@@ -4,11 +4,11 @@
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=2]
 
 [sub_resource type="CapsuleShape2D" id=1]
-radius = 4.0
+radius = 6.0
 height = 0.0
 
 [node name="Player" type="KinematicBody2D"]
-collision/safe_margin = 8.984
+collision/safe_margin = 0.001
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
