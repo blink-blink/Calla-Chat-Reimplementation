@@ -26,6 +26,7 @@ func trees():
 		
 		$NavigationPolygonInstance.set_navigation_polygon(polygon)
 
+# uses tileID and tilemap to provide navmesh to all tiles of said ID type
 func tileuse(Tilemap, ID):
 	var polygon = $NavigationPolygonInstance.get_navigation_polygon()
 	var used_tiles = Tilemap.get_used_cells_by_id(ID)
@@ -34,6 +35,8 @@ func tileuse(Tilemap, ID):
 		var polygon_offset = Tilemap.map_to_world(tile)
 		var tileregion = Tilemap.get_cell_autotile_coord(tile[0],tile[1])
 		var tiletransform = Tilemap.get_tileset().tile_get_shape_transform(ID, tileregion[0])
+		if not Tilemap.get_tileset().tile_get_shape(ID, tileregion[0]):
+			continue
 		var polygon_bp = Tilemap.get_tileset().tile_get_shape(ID, tileregion[0]).get_points()
 		for vertex in polygon_bp:
 			vertex += polygon_offset
@@ -42,6 +45,7 @@ func tileuse(Tilemap, ID):
 	polygon.make_polygons_from_outlines()		
 	$NavigationPolygonInstance.set_navigation_polygon(polygon)
 	
+# gets all IDs from a tilemap to be used in tileuse
 func tileuseall(Tilemap):
 	var IDs = Tilemap.get_tileset().get_tiles_ids()
 	for ID in IDs:
