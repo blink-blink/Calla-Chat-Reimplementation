@@ -19,11 +19,11 @@ func _process(delta):
 	self.zoom = self.zoom.move_toward(targetZoom, zoomAcceleration*delta)
 
 func _input(event):
-	if event.is_action_pressed("scroll_up"):
+	if event.is_action_pressed("scroll_down"):
 		targetZoom += zoomAmount
 		targetZoom = targetZoom.abs()
 		targetZoom = targetZoom.clamped(maxZoom)
-	if event.is_action_pressed("scroll_down"):
+	if event.is_action_pressed("scroll_up"):
 		targetZoom -= zoomAmount
 		if targetZoom.length_squared() < 0.01:
 			targetZoom = Vector2(0.1,0.1)
