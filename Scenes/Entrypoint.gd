@@ -28,7 +28,13 @@ func despawn_player(id: int):
 	
 func get_username(id: int):
 	pass
+	
+remote func update_client_position(client_id: int, new_x: float, new_y: float):
+	pass
 
+remote func disconnect_me(id: int):
+	emit_signal("network_peer_disconnected",id)
+	pass
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
