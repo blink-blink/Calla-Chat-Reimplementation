@@ -8,8 +8,14 @@ extends Panel
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	self.hide()
 
+func _input(event):
+	if event.is_action_pressed("emote"):
+		if self.is_visible_in_tree():
+			self.hide()
+		else:
+			self.show()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
