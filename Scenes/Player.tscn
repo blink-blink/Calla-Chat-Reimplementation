@@ -30,30 +30,29 @@ animations = [ {
 "name": "run right",
 "speed": 10.0
 }, {
-"frames": [ ExtResource( 14 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 4 ) ],
-"loop": true,
-"name": "run up",
-"speed": 10.0
-}, {
 "frames": [ ExtResource( 15 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 5 ) ],
 "loop": true,
 "name": "run left",
 "speed": 10.0
+}, {
+"frames": [ ExtResource( 14 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 4 ) ],
+"loop": true,
+"name": "run up",
+"speed": 10.0
 } ]
 
 [sub_resource type="CapsuleShape2D" id=1]
-radius = 6.0
-height = 0.0
+radius = 4.0
+height = 2.0
 
 [node name="Player" type="KinematicBody2D"]
 collision/safe_margin = 0.001
 script = ExtResource( 2 )
 
-[node name="Sprite" type="AnimatedSprite" parent="."]
-scale = Vector2( 1, 1 )
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 0, -2 )
 frames = SubResource( 2 )
 animation = "run down"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-scale = Vector2( 1, 1 )
 shape = SubResource( 1 )
