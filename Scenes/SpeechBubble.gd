@@ -3,14 +3,14 @@ extends Sprite
 
 onready var emote_sprite = get_node("Emote")
 onready var timer = get_node("Timer")
-var check = preload("res://Assets/UI/Emotes/check.png")
-var clap = preload("res://Assets/UI/Emotes/clap.png")
-var cross = preload("res://Assets/UI/Emotes/cross.png")
-var heart = preload("res://Assets/UI/Emotes/heart.png")
-var ok = preload("res://Assets/UI/Emotes/ok.png")
-var party = preload("res://Assets/UI/Emotes/party.png")
-var raise = preload("res://Assets/UI/Emotes/raise.png")
-var thumbsup = preload("res://Assets/UI/Emotes/thumbsup.png")
+onready var check = Resources.emotes["check"]
+onready var clap = Resources.emotes["clap"]
+onready var cross = Resources.emotes["cross"]
+onready var heart = Resources.emotes["heart"]
+onready var ok = Resources.emotes["ok"]
+onready var party = Resources.emotes["party"]
+onready var raise = Resources.emotes["raise"]
+onready var thumbsup = Resources.emotes["thumbsup"]
 
 
 func _ready():
