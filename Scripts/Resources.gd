@@ -1,3 +1,4 @@
+# Singleton for resources to be used in the game, they're all loaded here
 extends Node
 
 var emotes = {}
