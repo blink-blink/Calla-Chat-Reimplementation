@@ -11,13 +11,24 @@ onready var ok = Resources.emotes["ok"]
 onready var party = Resources.emotes["party"]
 onready var raise = Resources.emotes["raise"]
 onready var thumbsup = Resources.emotes["thumbsup"]
+var emotearray = [] # index of emote is its integer representation
 
 
 func _ready():
+	emotearray.append(null)
+	emotearray.append(clap)
+	emotearray.append(check)
+	emotearray.append(cross)
+	emotearray.append(ok)
+	emotearray.append(thumbsup)
+	emotearray.append(raise)
+	emotearray.append(heart)
+	emotearray.append(party)
 	self.hide()
 
 # shows emote by showing and hiding speech bubble with emote, uses a timer to time emote duration
-func startEmote():
+func startEmote(emotenumber):
+	emote_sprite.set_texture(emotearray[emotenumber])
 	self.show()
 	timer.start(5)
 	yield(timer, "timeout")
@@ -25,40 +36,32 @@ func startEmote():
 
 # each emote has a caller function together with preloaded texture
 func _on_Clap_pressed():
-	emote_sprite.set_texture(clap)
-	startEmote()
+	startEmote(1)
 
 
 func _on_Yes_pressed():
-	emote_sprite.set_texture(check)
-	startEmote()
+	startEmote(2)
 
 
 func _on_No_pressed():
-	emote_sprite.set_texture(cross)
-	startEmote()
+	startEmote(3)
 
 
 func _on_Ok_pressed():
-	emote_sprite.set_texture(ok)
-	startEmote()
+	startEmote(4)
 
 
 func _on_ThumbsUp_pressed():
-	emote_sprite.set_texture(thumbsup)
-	startEmote()
+	startEmote(5)
 
 
 func _on_Raise_pressed():
-	emote_sprite.set_texture(raise)
-	startEmote()
+	startEmote(6)
 
 
 func _on_Heart_pressed():
-	emote_sprite.set_texture(heart)
-	startEmote()
+	startEmote(7)
 
 
 func _on_Party_pressed():
-	emote_sprite.set_texture(party)
-	startEmote()
+	startEmote(8)
