@@ -42,11 +42,17 @@ func player_arrow_controlled():
 	return false
 
 func _unhandled_input(event):
-	if not event.is_action_pressed("mouse_right"):
-		return
+	if event.is_action_pressed("mouse_right"):
+		if event.get_shift() == true:
+			# teleport movement
+			self.global_position = get_global_mouse_position()
+			path.clear()
+		else:
+			# generate path on click
+			generate_path(global_position, get_global_mouse_position())
 	
-	#generate path on click
-	generate_path(global_position, get_global_mouse_position())
+	
+	
 
 func generate_path(start: Vector2, end: Vector2):
 	path = Navigation2d.get_simple_path(start, end, true)
