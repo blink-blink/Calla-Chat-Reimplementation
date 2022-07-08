@@ -24,14 +24,20 @@ func connection_success():
 func connection_failure():
 	pass
 	
+func initiate_disconnect():
+	rpc("disconnect_me", uniqueID)
+	
 func disconnected():
 	pass
-	
+
 func update_player_position(x: float, y: float):
 	rpc_unreliable("update_client_position", uniqueID, x, y)
 
 func send_emote(emoteint: int):
 	rpc("set_client_emote", uniqueID, emoteint)
+	
+remote func disconnect_me(id):
+	pass
 
 remote func set_all_user_positions(positions: Dictionary):
 	pass
