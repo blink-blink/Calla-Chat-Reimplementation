@@ -2,7 +2,7 @@
 extends Node
 
 var emotes = {}
-var maps = {}
+var scenes = {}
 var nodes = {}
 
 func _ready():
@@ -14,5 +14,6 @@ func _ready():
 	emotes["party"] = preload("res://Assets/UI/Emotes/party.png")
 	emotes["raise"] = preload("res://Assets/UI/Emotes/raise.png")
 	emotes["thumbsup"] = preload("res://Assets/UI/Emotes/thumbsup.png")
-	maps["Map1"] = preload("res://Scenes/Map1.tscn")
+	scenes["map1"] = preload("res://Scenes/Map1.tscn")
+	scenes["titlescreen"] = preload("res://Scenes/TitleScreen.tscn")
 	nodes["ControlledPlayer"] = preload("res://Scenes/ControlledPlayer.tscn")

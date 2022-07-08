@@ -7,9 +7,7 @@ var serverIP = "192.168.195.1"
 var serverPort = 22552
 
 func _ready():
-	var map_class = Resources.maps["Map1"]
-	var map_object = map_class.instance()
-	self.add_child(map_object)
+	pass
 
 func start_client():
 	var peer = NetworkedMultiplayerENet.new()

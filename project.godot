@@ -11,12 +11,13 @@ config_version=4
 [application]
 
 config/name="Calla Reimplementation"
-run/main_scene="res://Scenes/Entrypoint.tscn"
+run/main_scene="res://Scenes/TitleScreen.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
 Resources="*res://Scripts/Resources.gd"
+Multiplayer="*res://Scripts/Multiplayer.gd"
 
 [input]
 
