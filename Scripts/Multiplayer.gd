@@ -51,5 +51,5 @@ remote func set_all_avatars(avatars: Dictionary):
 remote func add_new_user(userid: int, username: String, avatar: int):
 	pass
 
-remote func set_user_emote(userid: int, emote: int):
+remote func set_client_emote(userid: int, emote: int):
 	pass
