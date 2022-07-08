@@ -1,6 +1,6 @@
 extends Camera2D
 
-onready var player = get_node("../Player")
+onready var player = get_node("../ControlledPlayer")
 
 var acceleration = 4
 var zoomAmount = Vector2(0.05, 0.05)

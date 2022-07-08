@@ -1,4 +1,4 @@
-extends Panel
+extends Control
 
 
 # Declare member variables here. Examples:
@@ -8,15 +8,13 @@ extends Panel
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	self.hide()
+	pass # Replace with function body.
 
-func _input(event):
-	if event.is_action_pressed("emote"):
-		if self.is_visible_in_tree():
-			self.hide()
-		else:
-			self.show()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
+
+
+func _on_JoinRoom_pressed():
+	get_tree().change_scene("res://Scenes/Map1.tscn")

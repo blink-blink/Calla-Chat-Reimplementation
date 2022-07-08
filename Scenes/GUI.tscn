@@ -9,7 +9,7 @@
 [ext_resource path="res://Assets/UI/Emotes/clap.png" type="Texture" id=7]
 [ext_resource path="res://Assets/UI/Emotes/ok.png" type="Texture" id=8]
 [ext_resource path="res://Assets/UI/Emotes/party.png" type="Texture" id=9]
-[ext_resource path="res://Scenes/Emote Panel.gd" type="Script" id=10]
+[ext_resource path="res://Scripts/Emote Panel.gd" type="Script" id=10]
 
 [node name="GUI" type="CanvasLayer"]
 
@@ -50,14 +50,14 @@ margin_right = 172.0
 margin_bottom = 54.0
 text = "Quit"
 
-[node name="Emote Panel" type="Panel" parent="."]
+[node name="EmotePanel" type="Panel" parent="."]
 margin_left = 770.0
 margin_top = 446.0
 margin_right = 990.0
 margin_bottom = 568.0
 script = ExtResource( 10 )
 
-[node name="GridContainer" type="GridContainer" parent="Emote Panel"]
+[node name="GridContainer" type="GridContainer" parent="EmotePanel"]
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 152.0
@@ -65,50 +65,50 @@ margin_bottom = 48.0
 hint_tooltip = "Emotes"
 columns = 4
 
-[node name="Clap" type="TextureButton" parent="Emote Panel/GridContainer"]
+[node name="Clap" type="TextureButton" parent="EmotePanel/GridContainer" groups=["emotebuttons"]]
 margin_right = 48.0
 margin_bottom = 48.0
 texture_normal = ExtResource( 7 )
 
-[node name="Ok" type="TextureButton" parent="Emote Panel/GridContainer"]
+[node name="Yes" type="TextureButton" parent="EmotePanel/GridContainer" groups=["emotebuttons"]]
 margin_left = 52.0
 margin_right = 100.0
 margin_bottom = 48.0
-texture_normal = ExtResource( 8 )
+texture_normal = ExtResource( 5 )
 
-[node name="ThumbsUp" type="TextureButton" parent="Emote Panel/GridContainer"]
+[node name="No" type="TextureButton" parent="EmotePanel/GridContainer" groups=["emotebuttons"]]
 margin_left = 104.0
 margin_right = 152.0
 margin_bottom = 48.0
-texture_normal = ExtResource( 6 )
+texture_normal = ExtResource( 2 )
 
-[node name="Raise" type="TextureButton" parent="Emote Panel/GridContainer"]
+[node name="Ok" type="TextureButton" parent="EmotePanel/GridContainer" groups=["emotebuttons"]]
 margin_left = 156.0
 margin_right = 204.0
 margin_bottom = 48.0
-texture_normal = ExtResource( 3 )
+texture_normal = ExtResource( 8 )
 
-[node name="Yes" type="TextureButton" parent="Emote Panel/GridContainer"]
+[node name="ThumbsUp" type="TextureButton" parent="EmotePanel/GridContainer" groups=["emotebuttons"]]
 margin_top = 52.0
 margin_right = 48.0
 margin_bottom = 100.0
-texture_normal = ExtResource( 5 )
+texture_normal = ExtResource( 6 )
 
-[node name="No" type="TextureButton" parent="Emote Panel/GridContainer"]
+[node name="Raise" type="TextureButton" parent="EmotePanel/GridContainer" groups=["emotebuttons"]]
 margin_left = 52.0
 margin_top = 52.0
 margin_right = 100.0
 margin_bottom = 100.0
-texture_normal = ExtResource( 2 )
+texture_normal = ExtResource( 3 )
 
-[node name="Heart" type="TextureButton" parent="Emote Panel/GridContainer"]
+[node name="Heart" type="TextureButton" parent="EmotePanel/GridContainer" groups=["emotebuttons"]]
 margin_left = 104.0
 margin_top = 52.0
 margin_right = 152.0
 margin_bottom = 100.0
 texture_normal = ExtResource( 4 )
 
-[node name="Party" type="TextureButton" parent="Emote Panel/GridContainer"]
+[node name="Party" type="TextureButton" parent="EmotePanel/GridContainer" groups=["emotebuttons"]]
 margin_left = 156.0
 margin_top = 52.0
 margin_right = 204.0
