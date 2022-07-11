@@ -2,10 +2,12 @@ extends KinematicBody2D
 
 class_name Character
 
-const NETWORK_TICK_RATE =  0.03
+const CLIENT_TICK_RATE =  1.0/45
+const SERVER_TICK_RATE = 1.0/20	 # set this to the server's tick rate, or request tickrate from server
 var tick = 0
 
 onready var sprite = $AnimatedSprite
+onready var tween: Tween
 
 var vel: Vector2
 var dir: Vector2
@@ -24,9 +26,10 @@ func player_control(delta): # overwritten if character is player
 func _physics_process(delta):
 	var is_local_player = player_control(delta)
 	
-	# move based on vel
-	vel = vel.normalized()
-	vel = move_and_slide(vel*move_speed)
+	# move based on vel if tween is not active
+	if !tween or not tween.is_active():
+		vel = vel.normalized()
+		vel = move_and_slide(vel*move_speed)
 	
 	# sprite animations
 	if vel.length_squared() < 0.01:
@@ -51,9 +54,8 @@ func _physics_process(delta):
 		else:
 			sprite.play("run left")
 	
-	if tick <= NETWORK_TICK_RATE:
-		tick += delta
-	else:
+	tick += delta
+	if tick >= CLIENT_TICK_RATE:
 		tick = 0
 		if is_local_player:
 			send_world_state()
@@ -89,11 +91,18 @@ func define_player_state() -> Dictionary:
 	return player_state
 
 func update_player_state(player_state):
+	if !tween:
+		print("tween created")
+		tween = Tween.new()
+		self.add_child(tween)
 	
-	#interpolate here (use tween)
-	
-	#pos
-	self.position = player_state["P"]
+	# pos
+	# if distance between position too high then teleport
+	if (player_state["P"] - position).length() >= move_speed*SERVER_TICK_RATE*3:
+		self.position = player_state["P"]
+	else:
+		tween.interpolate_property(self, "position", position, player_state["P"], SERVER_TICK_RATE)
+		tween.start()
 	#vel
 	self.vel = player_state["V"]
 	#curangle
