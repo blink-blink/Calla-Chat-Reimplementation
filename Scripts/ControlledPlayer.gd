@@ -56,9 +56,6 @@ func _unhandled_input(event):
 		else:
 			# generate path on click
 			generate_path(global_position, get_global_mouse_position())
-	
-	
-	
 
 func generate_path(start: Vector2, end: Vector2):
 	path = Navigation2d.get_simple_path(start, end, true)
@@ -84,6 +81,10 @@ func _physics_process(delta):
 	vel = vel.normalized()
 	vel = move_and_slide(vel*move_speed)
 	
+	# send position update
+	if vel.length_squared() > 0 or teleported == true:
+		Multiplayer.update_player_position(self.global_position)
+	
 	# sprite animations
 	if vel.length_squared() < 0.01:
 		# idle frame
@@ -100,6 +101,13 @@ func _physics_process(delta):
 			sprite.play("run up")
 		else:
 			sprite.play("run left")
+	
+	# reset teleported boolean
+	teleported = false
 
 func update_position():
 	Multiplayer.update_player_position(self.global_position)
+
+func set_username(name):
+	var label = get_node("Username")
+	label.text = name

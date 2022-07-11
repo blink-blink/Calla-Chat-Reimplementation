@@ -70,3 +70,12 @@ scale = Vector2( 0.427419, 0.427419 )
 
 [node name="Timer" type="Timer" parent="SpeechBubble"]
 wait_time = 5.0
+
+[node name="Username" type="Label" parent="."]
+margin_left = -15.0
+margin_top = -14.0
+margin_right = 85.0
+rect_scale = Vector2( 0.3, 0.3 )
+text = "Username"
+align = 1
+valign = 1

@@ -1,20 +1,12 @@
 extends Control
 
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
-
+onready var usernamefield = get_node("UserName")
 
 func _on_JoinRoom_pressed():
-	get_tree().change_scene("res://Scenes/Map1.tscn")
+	var username
+	if usernamefield.text == "":
+		username = "user"
+	else:
+		username = usernamefield.text
+	Multiplayer.start_client(username)
+	
