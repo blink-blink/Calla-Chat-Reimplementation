@@ -8,7 +8,8 @@ var position_lock: Mutex = Mutex.new()
 var user_positions: Dictionary = {}
 var usernames: Dictionary ={}
 var user_avatars: Dictionary ={}
-
+var last_update: float = 0
+var waiting_time: float = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	randomize()
@@ -71,9 +72,14 @@ func synchronize_user_positions():
 	for user_id in user_positions.keys():
 		rpc_unreliable_id(user_id, "set_all_user_positions",user_positions)
 	position_lock.unlock()
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _process(delta):
+	if waiting_time >= 0.02:
+		synchronize_user_positions()
+		waiting_time = 0
+	else:
+		waiting_time += delta
 
 
 func stop_calla_meeting():
