@@ -463,7 +463,7 @@ script = ExtResource( 4 )
 position = Vector2( 497, 183 )
 
 [node name="SpeechBubble" type="Sprite" parent="YSort/Player"]
-position = Vector2( 17, -38 )
+position = Vector2( 16.9999, -38 )
 scale = Vector2( 0.574074, 0.574074 )
 texture = ExtResource( 12 )
 script = ExtResource( 11 )

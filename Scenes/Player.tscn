@@ -1,21 +1,58 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=20 format=2]
 
-[ext_resource path="res://Assets/Character/Sample_Character.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Character/tile001.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Character/tile010.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Character/tile007.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Character/tile015.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Character/tile003.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Character/tile005.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Character/tile006.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Character/tile008.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Character/tile011.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Character/tile013.png" type="Texture" id=11]
+[ext_resource path="res://Assets/Character/tile014.png" type="Texture" id=12]
+[ext_resource path="res://Assets/Character/tile009.png" type="Texture" id=13]
+[ext_resource path="res://Assets/Character/tile004.png" type="Texture" id=14]
+[ext_resource path="res://Assets/Character/tile012.png" type="Texture" id=15]
+[ext_resource path="res://Assets/Character/tile002.png" type="Texture" id=16]
+[ext_resource path="res://Assets/Character/tile000.png" type="Texture" id=17]
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 17 ), ExtResource( 1 ), ExtResource( 16 ), ExtResource( 6 ) ],
+"loop": true,
+"name": "run down",
+"speed": 10.0
+}, {
+"frames": [ ExtResource( 9 ), ExtResource( 13 ), ExtResource( 3 ), ExtResource( 10 ) ],
+"loop": true,
+"name": "run right",
+"speed": 10.0
+}, {
+"frames": [ ExtResource( 15 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 5 ) ],
+"loop": true,
+"name": "run left",
+"speed": 10.0
+}, {
+"frames": [ ExtResource( 14 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 4 ) ],
+"loop": true,
+"name": "run up",
+"speed": 10.0
+} ]
 
 [sub_resource type="CapsuleShape2D" id=1]
-radius = 6.0
-height = 0.0
+radius = 4.0
+height = 2.0
 
 [node name="Player" type="KinematicBody2D"]
 collision/safe_margin = 0.001
 script = ExtResource( 2 )
 
-[node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 0, -1 )
-scale = Vector2( 0.05, 0.05 )
-texture = ExtResource( 1 )
-offset = Vector2( 23, -120 )
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 0, -2 )
+frames = SubResource( 2 )
+animation = "run down"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )

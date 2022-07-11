@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+onready var sprite = $AnimatedSprite
+
 var vel: Vector2
 var dir: Vector2
 
@@ -40,11 +42,17 @@ func player_arrow_controlled():
 	return false
 
 func _unhandled_input(event):
-	if not event.is_action_pressed("mouse_right"):
-		return
+	if event.is_action_pressed("mouse_right"):
+		if event.get_shift() == true:
+			# teleport movement
+			self.global_position = get_global_mouse_position()
+			path.clear()
+		else:
+			# generate path on click
+			generate_path(global_position, get_global_mouse_position())
 	
-	#generate path on click
-	generate_path(global_position, get_global_mouse_position())
+	
+	
 
 func generate_path(start: Vector2, end: Vector2):
 	path = Navigation2d.get_simple_path(start, end, true)
@@ -66,6 +74,23 @@ func _physics_process(delta):
 		# traverse path if any
 		traverse_path(delta)
 	
-	#move based on vel
+	# move based on vel
 	vel = vel.normalized()
 	vel = move_and_slide(vel*move_speed)
+	
+	# sprite animations
+	if vel.length_squared() < 0.01:
+		# idle frame
+		sprite.set_frame(0)
+		sprite.stop()
+	else:
+		# change animation direction based on vel angle
+		var curangle = vel.angle()
+		if curangle > -PI/4 and curangle < PI/4:
+			sprite.play("run right")
+		elif (curangle > PI/4 or is_equal_approx(curangle,PI/4)) and (curangle < 3*PI/4 or is_equal_approx(curangle,3*PI/4)):
+			sprite.play("run down")
+		elif (curangle > -3*PI/4 or is_equal_approx(curangle,-3*PI/4)) and (curangle < -PI/4 or is_equal_approx(curangle,-PI/4)):
+			sprite.play("run up")
+		else:
+			sprite.play("run left")
