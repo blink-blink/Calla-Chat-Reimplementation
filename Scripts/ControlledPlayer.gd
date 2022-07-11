@@ -2,6 +2,9 @@ extends KinematicBody2D
 
 onready var sprite = $AnimatedSprite
 
+var username
+var avatar
+
 var vel: Vector2
 var dir: Vector2
 
@@ -9,6 +12,7 @@ var move_up = false
 var move_down = false
 var move_left = false
 var move_right = false
+var teleported = false
 
 var Navigation2d: Navigation2D
 var path: Array = [] #nav path
@@ -18,6 +22,7 @@ var move_speed = 100
 func _ready():
 	if get_tree().has_group("MapNavigation"):
 		Navigation2d = get_tree().get_nodes_in_group("MapNavigation")[0]
+	Multiplayer.register_main_instance(self)
 
 func player_arrow_controlled():
 	var is_controlled = false
@@ -46,6 +51,7 @@ func _unhandled_input(event):
 		if event.get_shift() == true:
 			# teleport movement
 			self.global_position = get_global_mouse_position()
+			teleported = true
 			path.clear()
 		else:
 			# generate path on click
@@ -94,3 +100,6 @@ func _physics_process(delta):
 			sprite.play("run up")
 		else:
 			sprite.play("run left")
+
+func update_position():
+	Multiplayer.update_player_position(self.global_position)

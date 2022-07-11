@@ -17,3 +17,4 @@ func _ready():
 	scenes["map1"] = preload("res://Scenes/Map1.tscn")
 	scenes["titlescreen"] = preload("res://Scenes/TitleScreen.tscn")
 	nodes["ControlledPlayer"] = preload("res://Scenes/ControlledPlayer.tscn")
+	nodes["PeerPlayer"] = preload("res://Scenes/PeerPlayer.tscn")

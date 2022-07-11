@@ -1,7 +1,7 @@
 extends Node
 
 
-var mainplayer
+var playerinstances = {}
 var usernames: Dictionary = {}
 var serverIP = "192.168.195.1"
 var serverPort = 22552
@@ -18,6 +18,16 @@ func start_client():
 	peer.create_client(serverIP, serverPort)
 	get_tree().network_peer = peer
 	
+func register_main_instance(instance):
+	playerinstances[uniqueID] = instance
+	
+func create_peer_instance(ID):
+	# Grab YSort and add peer instance as child of YSort
+	var ysort = get_tree().get_node("YSort")
+	var instance = Resources.nodes["PeerPlayer"]
+	ysort.add_child(instance)
+	playerinstances[ID] = instance
+	
 func connection_success():
 	uniqueID = get_tree().get_network_unique_id()
 
@@ -30,8 +40,8 @@ func initiate_disconnect():
 func disconnected():
 	pass
 
-func update_player_position(x: float, y: float):
-	rpc_unreliable("update_client_position", uniqueID, x, y)
+func update_player_position(position: Vector2):
+	rpc_unreliable("update_client_position", uniqueID, position.x, position.y)
 
 func send_emote(emoteint: int):
 	rpc("set_client_emote", uniqueID, emoteint)
@@ -40,7 +50,12 @@ remote func disconnect_me(id):
 	pass
 
 remote func set_all_user_positions(positions: Dictionary):
-	pass
+	for user in positions.keys():
+		if playerinstances.has(user):
+			playerinstances[user].set_global_position(Vector2(positions[user]["x"],positions[user]["y"]))
+		else:
+			# add instance spawning code here
+			continue
 
 remote func set_all_usernames(usernames: Dictionary):
 	pass
@@ -49,7 +64,10 @@ remote func set_all_avatars(avatars: Dictionary):
 	pass
 
 remote func add_new_user(userid: int, username: String, avatar: int):
-	pass
+	create_peer_instance(userid)
 
 remote func set_client_emote(userid: int, emote: int):
-	pass
+	if playerinstances.has(userid):
+		var target = playerinstances[userid]
+		var speech = target.get_node("SpeechBubble")
+		speech.startEmote(emote)
