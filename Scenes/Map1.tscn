@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://Assets/Texture/TX Tileset Grass.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
@@ -10,8 +10,7 @@
 [ext_resource path="res://Assets/UI/Emotes/clap.png" type="Texture" id=8]
 [ext_resource path="res://Assets/UI/Emotes/check.png" type="Texture" id=9]
 [ext_resource path="res://Assets/UI/Emotes/cross.png" type="Texture" id=10]
-[ext_resource path="res://Scenes/SpeechBubble.gd" type="Script" id=11]
-[ext_resource path="res://Assets/UI/SpeachBubbleBoarder.png" type="Texture" id=12]
+[ext_resource path="res://Scenes/Map.gd" type="Script" id=11]
 [ext_resource path="res://Scenes/Emote Panel.gd" type="Script" id=13]
 [ext_resource path="res://Assets/UI/Emotes/heart.png" type="Texture" id=14]
 [ext_resource path="res://Assets/UI/Emotes/thumbsup.png" type="Texture" id=15]
@@ -350,18 +349,28 @@ vertices = PoolVector2Array( -32, -388, 1219, -383, 1215, 1216, -31, 1214 )
 polygons = [ PoolIntArray( 0, 1, 2, 3 ) ]
 outlines = [ PoolVector2Array( -32, -388, 1219, -383, 1215, 1216, -31, 1214 ) ]
 
-[node name="Map1" type="Node2D"]
+[node name="Map" type="Node2D"]
+script = ExtResource( 11 )
 
 [node name="GUI" parent="." instance=ExtResource( 5 )]
 
-[node name="Emote Panel" type="Panel" parent="GUI"]
+[node name="Control" type="Control" parent="GUI"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1024.0
+margin_top = -600.0
+
+[node name="Emote Panel" type="Panel" parent="GUI/Control"]
+visible = false
 margin_left = 770.0
 margin_top = 446.0
 margin_right = 990.0
 margin_bottom = 568.0
 script = ExtResource( 13 )
 
-[node name="GridContainer" type="GridContainer" parent="GUI/Emote Panel"]
+[node name="GridContainer" type="GridContainer" parent="GUI/Control/Emote Panel"]
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 152.0
@@ -369,50 +378,50 @@ margin_bottom = 48.0
 hint_tooltip = "Emotes"
 columns = 4
 
-[node name="Clap" type="TextureButton" parent="GUI/Emote Panel/GridContainer"]
+[node name="Clap" type="TextureButton" parent="GUI/Control/Emote Panel/GridContainer"]
 margin_right = 48.0
 margin_bottom = 48.0
 texture_normal = ExtResource( 8 )
 
-[node name="Ok" type="TextureButton" parent="GUI/Emote Panel/GridContainer"]
+[node name="Ok" type="TextureButton" parent="GUI/Control/Emote Panel/GridContainer"]
 margin_left = 52.0
 margin_right = 100.0
 margin_bottom = 48.0
 texture_normal = ExtResource( 18 )
 
-[node name="ThumbsUp" type="TextureButton" parent="GUI/Emote Panel/GridContainer"]
+[node name="ThumbsUp" type="TextureButton" parent="GUI/Control/Emote Panel/GridContainer"]
 margin_left = 104.0
 margin_right = 152.0
 margin_bottom = 48.0
 texture_normal = ExtResource( 15 )
 
-[node name="Raise" type="TextureButton" parent="GUI/Emote Panel/GridContainer"]
+[node name="Raise" type="TextureButton" parent="GUI/Control/Emote Panel/GridContainer"]
 margin_left = 156.0
 margin_right = 204.0
 margin_bottom = 48.0
 texture_normal = ExtResource( 16 )
 
-[node name="Yes" type="TextureButton" parent="GUI/Emote Panel/GridContainer"]
+[node name="Yes" type="TextureButton" parent="GUI/Control/Emote Panel/GridContainer"]
 margin_top = 52.0
 margin_right = 48.0
 margin_bottom = 100.0
 texture_normal = ExtResource( 9 )
 
-[node name="No" type="TextureButton" parent="GUI/Emote Panel/GridContainer"]
+[node name="No" type="TextureButton" parent="GUI/Control/Emote Panel/GridContainer"]
 margin_left = 52.0
 margin_top = 52.0
 margin_right = 100.0
 margin_bottom = 100.0
 texture_normal = ExtResource( 10 )
 
-[node name="Heart" type="TextureButton" parent="GUI/Emote Panel/GridContainer"]
+[node name="Heart" type="TextureButton" parent="GUI/Control/Emote Panel/GridContainer"]
 margin_left = 104.0
 margin_top = 52.0
 margin_right = 152.0
 margin_bottom = 100.0
 texture_normal = ExtResource( 14 )
 
-[node name="Party" type="TextureButton" parent="GUI/Emote Panel/GridContainer"]
+[node name="Party" type="TextureButton" parent="GUI/Control/Emote Panel/GridContainer"]
 margin_left = 156.0
 margin_top = 52.0
 margin_right = 204.0
@@ -453,6 +462,8 @@ position = Vector2( -167, 89 )
 [node name="Tree3" parent="YSort/Trees" instance=ExtResource( 3 )]
 position = Vector2( 273, -26 )
 
+[node name="OtherPlayers" type="YSort" parent="YSort"]
+
 [node name="PlayerCamera" type="Camera2D" parent="YSort"]
 position = Vector2( 497, 183 )
 current = true
@@ -462,23 +473,11 @@ script = ExtResource( 4 )
 [node name="Player" parent="YSort" instance=ExtResource( 2 )]
 position = Vector2( 497, 183 )
 
-[node name="SpeechBubble" type="Sprite" parent="YSort/Player"]
-position = Vector2( 16.9999, -38 )
-scale = Vector2( 0.574074, 0.574074 )
-texture = ExtResource( 12 )
-script = ExtResource( 11 )
-
-[node name="Emote" type="Sprite" parent="YSort/Player/SpeechBubble"]
-scale = Vector2( 0.427419, 0.427419 )
-
-[node name="Timer" type="Timer" parent="YSort/Player/SpeechBubble"]
-wait_time = 5.0
-
-[connection signal="pressed" from="GUI/Emote Panel/GridContainer/Clap" to="YSort/Player/SpeechBubble" method="_on_Clap_pressed"]
-[connection signal="pressed" from="GUI/Emote Panel/GridContainer/Ok" to="YSort/Player/SpeechBubble" method="_on_Ok_pressed"]
-[connection signal="pressed" from="GUI/Emote Panel/GridContainer/ThumbsUp" to="YSort/Player/SpeechBubble" method="_on_ThumbsUp_pressed"]
-[connection signal="pressed" from="GUI/Emote Panel/GridContainer/Raise" to="YSort/Player/SpeechBubble" method="_on_Raise_pressed"]
-[connection signal="pressed" from="GUI/Emote Panel/GridContainer/Yes" to="YSort/Player/SpeechBubble" method="_on_Yes_pressed"]
-[connection signal="pressed" from="GUI/Emote Panel/GridContainer/No" to="YSort/Player/SpeechBubble" method="_on_No_pressed"]
-[connection signal="pressed" from="GUI/Emote Panel/GridContainer/Heart" to="YSort/Player/SpeechBubble" method="_on_Heart_pressed"]
-[connection signal="pressed" from="GUI/Emote Panel/GridContainer/Party" to="YSort/Player/SpeechBubble" method="_on_Party_pressed"]
+[connection signal="pressed" from="GUI/Control/Emote Panel/GridContainer/Clap" to="GUI/Control/Emote Panel" method="_on_Clap_pressed"]
+[connection signal="pressed" from="GUI/Control/Emote Panel/GridContainer/Ok" to="GUI/Control/Emote Panel" method="_on_Ok_pressed"]
+[connection signal="pressed" from="GUI/Control/Emote Panel/GridContainer/ThumbsUp" to="GUI/Control/Emote Panel" method="_on_ThumbsUp_pressed"]
+[connection signal="pressed" from="GUI/Control/Emote Panel/GridContainer/Raise" to="GUI/Control/Emote Panel" method="_on_Raise_pressed"]
+[connection signal="pressed" from="GUI/Control/Emote Panel/GridContainer/Yes" to="GUI/Control/Emote Panel" method="_on_Yes_pressed"]
+[connection signal="pressed" from="GUI/Control/Emote Panel/GridContainer/No" to="GUI/Control/Emote Panel" method="_on_No_pressed"]
+[connection signal="pressed" from="GUI/Control/Emote Panel/GridContainer/Heart" to="GUI/Control/Emote Panel" method="_on_Heart_pressed"]
+[connection signal="pressed" from="GUI/Control/Emote Panel/GridContainer/Party" to="GUI/Control/Emote Panel" method="_on_Party_pressed"]

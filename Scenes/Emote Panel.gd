@@ -1,10 +1,6 @@
 extends Panel
 
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
+onready var player = get_node("../../../YSort/Player")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -17,6 +13,34 @@ func _input(event):
 		else:
 			self.show()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+# each emote has a caller function together with preloaded texture
+func _on_Clap_pressed():
+	player.start_emote("clap")
+
+
+func _on_Yes_pressed():
+	player.start_emote("check")
+
+
+func _on_No_pressed():
+	player.start_emote("cross")
+
+
+func _on_Ok_pressed():
+	player.start_emote("heart")
+
+
+func _on_ThumbsUp_pressed():
+	player.start_emote("thumbsup")
+
+
+func _on_Raise_pressed():
+	player.start_emote("raise")
+
+
+func _on_Heart_pressed():
+	player.start_emote("heart")
+
+
+func _on_Party_pressed():
+	player.start_emote("party")

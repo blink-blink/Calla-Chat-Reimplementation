@@ -8,6 +8,16 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "KinematicBody2D",
+"class": "Character",
+"language": "GDScript",
+"path": "res://Scripts/Character.gd"
+} ]
+_global_script_class_icons={
+"Character": ""
+}
+
 [application]
 
 config/name="Calla Reimplementation"
@@ -16,7 +26,9 @@ config/icon="res://icon.png"
 
 [autoload]
 
+GameData="*res://Scripts/Singletons/GameData.gd"
 Resources="*res://Scripts/Resources.gd"
+Server="*res://Scripts/Singletons/Server.gd"
 
 [input]
 
