@@ -361,6 +361,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -1024.0
 margin_top = -600.0
+mouse_filter = 2
 
 [node name="Emote Panel" type="Panel" parent="GUI/Control"]
 visible = false
