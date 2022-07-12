@@ -16,7 +16,7 @@ func _ready():
 	
 	
 func start_calla_meeting(hostname: String,host_avatar: int):
-	user_positions[-1] = {"x":0,"y":0,"timestamp":0}
+	user_positions[-1] = {"x":0,"y":0}
 	usernames[-1] = hostname
 	user_avatars[-1] = host_avatar
 	var command_and_control = NetworkedMultiplayerENet.new()
