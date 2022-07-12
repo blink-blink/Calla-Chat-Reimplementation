@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://Assets/Character/tile001.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/ControlledPlayer.gd" type="Script" id=2]
@@ -19,9 +19,15 @@
 [ext_resource path="res://Assets/Character/tile000.png" type="Texture" id=17]
 [ext_resource path="res://Scripts/SpeechBubble.gd" type="Script" id=18]
 [ext_resource path="res://Assets/UI/SpeachBubbleBoarder.png" type="Texture" id=19]
+[ext_resource path="res://Assets/Fonts/prstart.tres" type="DynamicFont" id=20]
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
+"frames": [ ExtResource( 9 ), ExtResource( 13 ), ExtResource( 3 ), ExtResource( 10 ) ],
+"loop": true,
+"name": "run right",
+"speed": 10.0
+}, {
 "frames": [ ExtResource( 17 ), ExtResource( 1 ), ExtResource( 16 ), ExtResource( 6 ) ],
 "loop": true,
 "name": "run down",
@@ -35,11 +41,6 @@ animations = [ {
 "frames": [ ExtResource( 14 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 4 ) ],
 "loop": true,
 "name": "run up",
-"speed": 10.0
-}, {
-"frames": [ ExtResource( 9 ), ExtResource( 13 ), ExtResource( 3 ), ExtResource( 10 ) ],
-"loop": true,
-"name": "run right",
 "speed": 10.0
 } ]
 
@@ -72,10 +73,14 @@ scale = Vector2( 0.427419, 0.427419 )
 wait_time = 5.0
 
 [node name="Username" type="Label" parent="."]
-margin_left = -15.0
-margin_top = -14.0
-margin_right = 85.0
-rect_scale = Vector2( 0.3, 0.3 )
+margin_left = -26.0
+margin_top = -21.0
+margin_right = 40.0
+margin_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+rect_scale = Vector2( 0.8, 0.8 )
+custom_fonts/font = ExtResource( 20 )
 text = "Username"
 align = 1
 valign = 1

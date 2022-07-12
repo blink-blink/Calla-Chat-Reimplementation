@@ -25,11 +25,6 @@ func _ready():
 	emotearray.append(heart)
 	emotearray.append(party)
 	self.hide()
-	var index = 1
-	# connect pressed signals of emote buttons to startEmote function
-	for button in get_tree().get_nodes_in_group("emotebuttons"):
-		button.connect("pressed", self, "startEmote", [index])
-		index += 1
 
 # shows emote by showing and hiding speech bubble with emote, uses a timer to time emote duration
 func startEmote(emotenumber):
