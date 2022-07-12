@@ -71,6 +71,10 @@ func dial_received(id: int):
 	pass	
 
 func synchronize_user_positions():
+	# 1 position only means only host is active
+	# 0 positions means game hasn't even started
+	if len(user_positions.keys()) < 2:
+		return
 	position_lock.lock()
 	rpc_unreliable_id(0, "set_all_user_positions",user_positions,OS.get_system_time_msecs())
 	position_lock.unlock()
