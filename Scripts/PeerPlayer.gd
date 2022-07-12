@@ -1,3 +1,4 @@
+# peer player is a player instance meant to represent other players aside from ourselves in the map
 extends Character
 
 func control(delta):

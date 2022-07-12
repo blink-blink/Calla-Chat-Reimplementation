@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-class_name Character
+class_name Character # this class is inherited by controlled player and peer player
 
 const CLIENT_TICK_RATE =  1.0/45
 const SERVER_TICK_RATE = 1.0/20	 # set this to the server's tick rate, or request tickrate from server

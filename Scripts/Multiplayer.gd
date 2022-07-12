@@ -1,6 +1,5 @@
 extends Node
 
-
 var playerinstances = {} # keeps track of all player instances in the map
 var usernames: Dictionary = {}
 var serverIP = "192.168.195.1"
@@ -16,8 +15,6 @@ func _ready():
 	get_tree().connect("connected_to_server", self, "connection_success")
 	get_tree().connect("connection_failed", self, "connection_failure")
 	get_tree().connect("server_disconnected", self, "disconnected")
-	self.set_physics_process(false)
-	pass
 
 func start_client(username):
 	# connect to server
@@ -78,6 +75,7 @@ remote func disconnect_me(id):
 
 remote func set_all_user_positions(positions: Dictionary, timestamp: int):
 	if timestamp < curtimestamp:
+		# reject out of order packets
 		return
 	for user in positions.keys():
 		if user == uniqueID:

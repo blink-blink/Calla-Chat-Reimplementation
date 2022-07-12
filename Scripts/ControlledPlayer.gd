@@ -1,3 +1,4 @@
+# controlled player is the class that describes the player instance that this current client is controlling
 extends Character
 
 var move_up = false

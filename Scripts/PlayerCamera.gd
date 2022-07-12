@@ -9,6 +9,7 @@ var zoomAcceleration = 0.5
 var maxZoom = 1
 
 func _ready():
+	# setup camera to smoothly follow target
 	global_transform.origin = player.global_transform.origin
 	self.smoothing_enabled = true
 	self.smoothing_speed = acceleration
@@ -19,6 +20,7 @@ func _process(delta):
 	self.zoom = self.zoom.move_toward(targetZoom, zoomAcceleration*delta)
 
 func _input(event):
+	# camera zoom logic
 	if event.is_action_pressed("scroll_down"):
 		targetZoom += zoomAmount
 		targetZoom = targetZoom.abs()
