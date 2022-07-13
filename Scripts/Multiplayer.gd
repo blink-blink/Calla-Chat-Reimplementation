@@ -35,10 +35,10 @@ func register_main_instance(instance):
 	
 func create_peer_instance(ID, username = "user", avatar = 0):
 	# Grab YSort and add peer instance as child of YSort
-	var ysort = get_tree().get_node("YSort")
-	var instance = Resources.nodes["PeerPlayer"]
+	var ysort = get_node("../Map1/YSort")
+	var instance = Resources.nodes["PeerPlayer"].instance()
 	ysort.add_child(instance)
-	instance.name = ID
+	instance.name = str(ID)
 	instance.set_username(username)
 	playerinstances[ID] = instance
 	
