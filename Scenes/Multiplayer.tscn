@@ -8,5 +8,9 @@ script = ExtResource( 1 )
 
 [node name="startup_screen" parent="." instance=ExtResource( 2 )]
 
+[node name="synchronizer" type="Timer" parent="."]
+wait_time = 0.2
+
 [connection signal="start_meeting" from="startup_screen" to="." method="start_calla_meeting"]
 [connection signal="stop_meeting" from="startup_screen" to="." method="stop_calla_meeting"]
+[connection signal="timeout" from="synchronizer" to="." method="synchronize_user_positions"]

@@ -16,6 +16,7 @@ func _ready():
 	
 	
 func start_calla_meeting(hostname: String,host_avatar: int):
+	$synchronizer.start()
 	user_positions[-1] = {"x":0,"y":0}
 	usernames[-1] = hostname
 	user_avatars[-1] = host_avatar
@@ -78,19 +79,14 @@ func synchronize_user_positions():
 	position_lock.lock()
 	rpc_unreliable_id(0, "set_all_user_positions",user_positions,OS.get_system_time_msecs())
 	position_lock.unlock()
-	
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	if waiting_time >= 0.02:
-		synchronize_user_positions()
-		waiting_time = 0
-	else:
-		waiting_time += delta
+
 
 
 func stop_calla_meeting():
+	$synchronizer.stop()
 	get_tree().network_peer = null 
 	user_avatars.clear()
 	user_positions.clear()
 	usernames.clear()
 	player_checkins.clear()
+
