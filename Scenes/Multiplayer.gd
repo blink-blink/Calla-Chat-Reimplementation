@@ -41,11 +41,11 @@ remote func register_client(client_username: String, client_avatar: int, client_
 	usernames[client_id] = client_username
 	user_avatars[client_id] = client_avatar
 	player_checkins[client_id] = OS.get_system_time_msecs()
-	rpc_unreliable_id(client_id, "set_all_user_positions",user_positions)
+	rpc_unreliable_id(client_id, "set_all_user_positions",user_positions,OS.get_system_time_msecs())
 	rpc_id(client_id,"set_all_usernames",usernames)
 	rpc_id(client_id,"set_all_avatars",user_avatars)
 	for user_id in user_positions.keys():
-		if client_id != user_id:
+		if client_id != user_id and client_id != -1:
 			rpc_id(user_id, "add_new_user", client_username, client_avatar)
 	position_lock.unlock()
 	
@@ -90,3 +90,7 @@ func _process(delta):
 
 func stop_calla_meeting():
 	get_tree().network_peer = null 
+	user_avatars.clear()
+	user_positions.clear()
+	usernames.clear()
+	player_checkins.clear()
