@@ -10,7 +10,7 @@ onready var sprite = $AnimatedSprite
 onready var speechbubble = $SpeechBubble
 
 var username
-var avatar
+var avatar : int = 0
 
 var vel: Vector2
 var dir: Vector2
