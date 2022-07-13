@@ -2,8 +2,10 @@ extends KinematicBody2D
 
 class_name Character # this class is inherited by controlled player and peer player
 
-const CLIENT_TICK_RATE =  1.0/45
-const SERVER_TICK_RATE = 1.0/20	 # set this to the server's tick rate, or request tickrate from server
+signal tick
+
+const CLIENT_TICK_RATE =  0.2
+const SERVER_TICK_RATE = 0.2 # set this to the server's tick rate, or request tickrate from server
 var tick = 0
 
 onready var sprite = $AnimatedSprite
@@ -57,6 +59,8 @@ func _physics_process(delta):
 		tick = 0
 		if is_local_player:
 			send_position()
+		else:
+			emit_signal("tick")
 
 func send_position():
 	Multiplayer.update_player_position(self.global_position)

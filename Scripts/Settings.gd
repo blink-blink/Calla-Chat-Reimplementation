@@ -8,4 +8,5 @@ func _input(event):
 		visible = !visible
 
 func _on_Quit_pressed():
+	Multiplayer.initiate_disconnect()
 	get_tree().change_scene("res://Scenes/TitleScreen.tscn")

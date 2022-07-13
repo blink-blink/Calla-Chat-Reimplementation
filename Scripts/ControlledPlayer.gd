@@ -8,7 +8,6 @@ var move_right = false
 var teleported = false
 
 func _ready():
-	Multiplayer.register_main_instance(self)
 	var index = 1
 	# connect pressed signals of emote buttons to startEmote function
 	for button in get_tree().get_nodes_in_group("emotebuttons"):
