@@ -24,7 +24,7 @@ func start_client(username):
 	mainplayerusername = username
 	
 	# debug ------------------------------------------------------------------------------
-	debug_conn_success() # IMPORTANT - REMOVE WHEN TESTING ACTUAL MULTIPLAYER CONNECTIVITY
+	# debug_conn_success() # IMPORTANT - REMOVE WHEN TESTING ACTUAL MULTIPLAYER CONNECTIVITY
 	# debug ------------------------------------------------------------------------------
 	
 func register_main_instance(instance):
@@ -62,7 +62,7 @@ func disconnected():
 	print("Disconnected")
 
 func update_player_position(position: Vector2):
-	rpc_unreliable("update_client_position", uniqueID, position.x, position.y, OS.get_system_time_msecs())
+	rpc_unreliable("update_client_position", position.x, position.y, OS.get_system_time_msecs())
 
 func send_emote(emoteint: int):
 	rpc("set_client_emote", uniqueID, emoteint)
