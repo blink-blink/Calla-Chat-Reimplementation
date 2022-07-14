@@ -83,6 +83,7 @@ func connection_failure():
 	
 func initiate_disconnect():
 	rpc_id(1,"disconnect_me")
+	get_tree().network_peer.close_connection()
 	active = false
 	
 func disconnected():
