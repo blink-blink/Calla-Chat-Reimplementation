@@ -48,7 +48,7 @@ func create_main_instance(username = "user", avatar = 0, position = Vector2(20, 
 	
 
 func register_main_instance(instance):
-	rpc("register_client", mainplayerusername, instance.avatar, instance.global_position.x, instance.global_position.y)
+	rpc_id(1,"register_client", mainplayerusername, instance.avatar, instance.global_position.x, instance.global_position.y)
 
 func create_peer_instance(ID, username = "user", avatar = 0, position = Vector2(0, 0)):
 	# Grab YSort and add peer instance as child of YSort
@@ -82,7 +82,7 @@ func connection_failure():
 	print("connection unsuccessful")
 	
 func initiate_disconnect():
-	rpc("disconnect_me")
+	rpc_id(1,"disconnect_me")
 	active = false
 	
 func disconnected():
@@ -92,12 +92,12 @@ func disconnected():
 func update_player_position(position: Vector2):
 	if not active:
 		return
-	rpc_unreliable("update_client_position", position.x, position.y, OS.get_system_time_msecs())
+	rpc_unreliable_id(1,"update_client_position", position.x, position.y, OS.get_system_time_msecs())
 
 func send_emote(emoteint: int):
 	if not active:
 		return
-	rpc("set_client_emote", uniqueID, emoteint)
+	rpc_id(1,"set_client_emote", uniqueID, emoteint)
 	
 remote func disconnect_me(id):
 	if playerinstances.has(id):
