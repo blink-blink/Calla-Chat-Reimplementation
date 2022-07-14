@@ -12,6 +12,7 @@ func _ready():
 	# connect pressed signals of emote buttons to startEmote function
 	for button in get_tree().get_nodes_in_group("emotebuttons"):
 		button.connect("pressed", speechbubble, "startEmote", [index])
+		button.connect("pressed", Multiplayer, "send_emote", [index])
 		index += 1
 
 func player_arrow_controlled():

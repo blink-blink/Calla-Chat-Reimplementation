@@ -97,7 +97,7 @@ func update_player_position(position: Vector2):
 func send_emote(emoteint: int):
 	if not active:
 		return
-	rpc_id(1,"set_client_emote", uniqueID, emoteint)
+	rpc_id(1,"set_client_emote", emoteint)
 	
 remote func disconnect_me(id):
 	if playerinstances.has(id):
