@@ -72,20 +72,21 @@ func debug_conn_success():
 
 func connection_success():
 	# on successful connection, store ID, create and register main instance
+	print("connection successful")
 	uniqueID = get_tree().get_network_unique_id()
 	var main_instance = create_main_instance(mainplayerusername)
 	register_main_instance(main_instance)
 	active = true
 
 func connection_failure():
-	print("Connection unsuccessful")
+	print("connection unsuccessful")
 	
 func initiate_disconnect():
 	rpc("disconnect_me")
 	active = false
 	
 func disconnected():
-	print("Disconnected")
+	print("disconnected")
 	active = false
 
 func update_player_position(position: Vector2):
