@@ -99,9 +99,6 @@ func send_emote(emoteint: int):
 		return
 	rpc("set_client_emote", uniqueID, emoteint)
 	
-remote func update_client_position():
-	pass
-	
 remote func disconnect_me(id):
 	if playerinstances.has(id):
 		# delete instance from dictionary and scene
