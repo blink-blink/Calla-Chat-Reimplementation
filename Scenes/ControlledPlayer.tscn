@@ -28,6 +28,11 @@ animations = [ {
 "name": "run right",
 "speed": 10.0
 }, {
+"frames": [ ExtResource( 14 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 4 ) ],
+"loop": true,
+"name": "run up",
+"speed": 10.0
+}, {
 "frames": [ ExtResource( 17 ), ExtResource( 1 ), ExtResource( 16 ), ExtResource( 6 ) ],
 "loop": true,
 "name": "run down",
@@ -36,11 +41,6 @@ animations = [ {
 "frames": [ ExtResource( 15 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 5 ) ],
 "loop": true,
 "name": "run left",
-"speed": 10.0
-}, {
-"frames": [ ExtResource( 14 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 4 ) ],
-"loop": true,
-"name": "run up",
 "speed": 10.0
 } ]
 

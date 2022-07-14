@@ -9,4 +9,4 @@ func _input(event):
 
 func _on_Quit_pressed():
 	Multiplayer.initiate_disconnect()
-	get_tree().change_scene("res://Scenes/TitleScreen.tscn")
+	get_tree().change_scene_to(Resources.scenes["titlescreen"])

@@ -5,7 +5,7 @@ signal pos_setup
 var playerinstances = {} # keeps track of all player instances in the map
 var serverIP = "192.168.195.1"
 var serverPort = 22552
-var uniqueID: int # our rpc id
+var uniqueID # our rpc id
 var mainplayerusername: String # our username
 var mappath = "../Map1/YSort"
 var curtimestamp = -1 # timestamp for position updates
@@ -84,11 +84,20 @@ func connection_failure():
 func initiate_disconnect():
 	rpc_id(1,"disconnect_me")
 	get_tree().network_peer.close_connection()
+	reset_state()
+	
+func reset_state():
 	active = false
+	setupcomplete = false
+	playerinstances.clear()	
+	mainplayerusername = ""
+	curtimestamp = -1
+	uniqueID = null
 	
 func disconnected():
 	print("disconnected")
-	active = false
+	reset_state()
+	get_tree().change_scene_to(Resources.scenes["titlescreen"])
 
 func update_player_position(position: Vector2):
 	if not active:
