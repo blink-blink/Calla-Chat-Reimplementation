@@ -41,6 +41,7 @@ func create_main_instance(username = "user", avatar = 0, position = Vector2(20, 
 	instance.global_position = position
 	instance.name = str(uniqueID)
 	instance.set_username(username)
+	instance.set_network_master(1)
 	camera.set_player(instance)
 	playerinstances[uniqueID] = instance
 	return instance
@@ -57,6 +58,7 @@ func create_peer_instance(ID, username = "user", avatar = 0, position = Vector2(
 	instance.global_position = position
 	instance.name = username
 	instance.set_username(username)
+	instance.set_network_master(1)
 	playerinstances[ID] = instance
 	return instance
 	
@@ -97,6 +99,9 @@ func send_emote(emoteint: int):
 		return
 	rpc("set_client_emote", uniqueID, emoteint)
 	
+remote func update_client_position():
+	pass
+	
 remote func disconnect_me(id):
 	if playerinstances.has(id):
 		# delete instance from dictionary and scene
@@ -119,12 +124,12 @@ remote func update_all_user_positions(positions: Dictionary, timestamp: int):
 	if timestamp < curtimestamp:
 		# reject out of order packets
 		return
-	for user in positions.keys():
-		if user == uniqueID:
+	for userID in positions.keys():
+		if userID == uniqueID:
 			# skip own position
 			continue
-		if playerinstances.has(user):
-			playerinstances[user].update_player(Vector2(positions[user]["x"],positions[user]["y"]))
+		if playerinstances.has(userID):
+			playerinstances[userID].update_player(Vector2(positions[userID]["x"],positions[userID]["y"]))
 		else:
 			print("new user tried to update with no instance yet")
 	curtimestamp = timestamp
