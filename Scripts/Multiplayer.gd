@@ -1,6 +1,6 @@
 extends Node
 
-signal pos_updated
+signal pos_setup
 
 var playerinstances = {} # keeps track of all player instances in the map
 var serverIP = "192.168.195.1"
@@ -9,9 +9,6 @@ var uniqueID: int # our rpc id
 var mainplayerusername: String # our username
 var mappath = "../Map1/YSort"
 var curtimestamp = -1 # timestamp for position updates
-const CLIENT_TICK_RATE =  1.0/45
-const SERVER_TICK_RATE = 1.0/20
-var tick = 0 
 var active: bool = false # bool for if game is active
 
 func _ready():
@@ -105,7 +102,21 @@ remote func disconnect_me(id):
 		playerinstances[id].queue_free()
 		playerinstances.erase(id)
 
-remote func set_all_user_positions(positions: Dictionary, timestamp: int):
+remote func set_all_user_positions(positions: Dictionary):
+	if not active:
+		return
+	for user in positions.keys():
+		if user == uniqueID:
+			# skip own position
+			continue
+		if playerinstances.has(user):
+			playerinstances[user].update_player(Vector2(positions[user]["x"],positions[user]["y"]))
+		else:
+			var instance = create_peer_instance(user)
+			instance.update_player(Vector2(positions[user]["x"],positions[user]["y"]))
+	emit_signal("pos_setup")
+	
+remote func update_all_user_positions(positions: Dictionary, timestamp: int):
 	if not active:
 		return
 	if timestamp < curtimestamp:
@@ -118,15 +129,13 @@ remote func set_all_user_positions(positions: Dictionary, timestamp: int):
 		if playerinstances.has(user):
 			playerinstances[user].update_player(Vector2(positions[user]["x"],positions[user]["y"]))
 		else:
-			var instance = create_peer_instance(user)
-			instance.update_player(Vector2(positions[user]["x"],positions[user]["y"]))
+			print("new user tried to update with no instance yet")
 	curtimestamp = timestamp
-	emit_signal("pos_updated")
 
 remote func set_all_usernames(usernames: Dictionary):
 	if not active:
 		return
-	yield(self, "pos_updated") # wait until position update is done
+	yield(self, "pos_setup") # wait until position update is done
 	for user in usernames.keys():
 		if user == uniqueID:
 			# skip own username
