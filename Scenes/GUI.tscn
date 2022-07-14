@@ -1,6 +1,15 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scripts/Settings.gd" type="Script" id=1]
+[ext_resource path="res://Assets/UI/Emotes/cross.png" type="Texture" id=2]
+[ext_resource path="res://Assets/UI/Emotes/raise.png" type="Texture" id=3]
+[ext_resource path="res://Assets/UI/Emotes/heart.png" type="Texture" id=4]
+[ext_resource path="res://Assets/UI/Emotes/check.png" type="Texture" id=5]
+[ext_resource path="res://Assets/UI/Emotes/thumbsup.png" type="Texture" id=6]
+[ext_resource path="res://Assets/UI/Emotes/clap.png" type="Texture" id=7]
+[ext_resource path="res://Assets/UI/Emotes/ok.png" type="Texture" id=8]
+[ext_resource path="res://Assets/UI/Emotes/party.png" type="Texture" id=9]
+[ext_resource path="res://Scripts/Emote Panel.gd" type="Script" id=10]
 
 [node name="GUI" type="CanvasLayer"]
 
@@ -40,5 +49,70 @@ margin_top = 34.0
 margin_right = 172.0
 margin_bottom = 54.0
 text = "Quit"
+
+[node name="EmotePanel" type="Panel" parent="."]
+margin_left = 770.0
+margin_top = 446.0
+margin_right = 990.0
+margin_bottom = 568.0
+script = ExtResource( 10 )
+
+[node name="GridContainer" type="GridContainer" parent="EmotePanel"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 152.0
+margin_bottom = 48.0
+hint_tooltip = "Emotes"
+columns = 4
+
+[node name="Clap" type="TextureButton" parent="EmotePanel/GridContainer" groups=["emotebuttons"]]
+margin_right = 48.0
+margin_bottom = 48.0
+texture_normal = ExtResource( 7 )
+
+[node name="Yes" type="TextureButton" parent="EmotePanel/GridContainer" groups=["emotebuttons"]]
+margin_left = 52.0
+margin_right = 100.0
+margin_bottom = 48.0
+texture_normal = ExtResource( 5 )
+
+[node name="No" type="TextureButton" parent="EmotePanel/GridContainer" groups=["emotebuttons"]]
+margin_left = 104.0
+margin_right = 152.0
+margin_bottom = 48.0
+texture_normal = ExtResource( 2 )
+
+[node name="Ok" type="TextureButton" parent="EmotePanel/GridContainer" groups=["emotebuttons"]]
+margin_left = 156.0
+margin_right = 204.0
+margin_bottom = 48.0
+texture_normal = ExtResource( 8 )
+
+[node name="ThumbsUp" type="TextureButton" parent="EmotePanel/GridContainer" groups=["emotebuttons"]]
+margin_top = 52.0
+margin_right = 48.0
+margin_bottom = 100.0
+texture_normal = ExtResource( 6 )
+
+[node name="Raise" type="TextureButton" parent="EmotePanel/GridContainer" groups=["emotebuttons"]]
+margin_left = 52.0
+margin_top = 52.0
+margin_right = 100.0
+margin_bottom = 100.0
+texture_normal = ExtResource( 3 )
+
+[node name="Heart" type="TextureButton" parent="EmotePanel/GridContainer" groups=["emotebuttons"]]
+margin_left = 104.0
+margin_top = 52.0
+margin_right = 152.0
+margin_bottom = 100.0
+texture_normal = ExtResource( 4 )
+
+[node name="Party" type="TextureButton" parent="EmotePanel/GridContainer" groups=["emotebuttons"]]
+margin_left = 156.0
+margin_top = 52.0
+margin_right = 204.0
+margin_bottom = 100.0
+texture_normal = ExtResource( 9 )
 
 [connection signal="pressed" from="Settings/ColorRect/VBoxContainer/Quit" to="Settings" method="_on_Quit_pressed"]

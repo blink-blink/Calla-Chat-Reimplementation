@@ -8,15 +8,26 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "KinematicBody2D",
+"class": "Character",
+"language": "GDScript",
+"path": "res://Scripts/Character.gd"
+} ]
+_global_script_class_icons={
+"Character": ""
+}
+
 [application]
 
 config/name="Calla Reimplementation"
-run/main_scene="res://Scenes/Map1.tscn"
+run/main_scene="res://Scenes/TitleScreen.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
 Resources="*res://Scripts/Resources.gd"
+Multiplayer="*res://Scripts/Multiplayer.gd"
 
 [input]
 
@@ -79,4 +90,3 @@ common/enable_pause_aware_picking=true
 quality/driver/driver_name="GLES2"
 vram_compression/import_etc=true
 vram_compression/import_etc2=false
-environment/default_environment="res://default_env.tres"
