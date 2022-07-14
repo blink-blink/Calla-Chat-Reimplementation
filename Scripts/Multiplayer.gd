@@ -10,6 +10,7 @@ var mainplayerusername: String # our username
 var mappath = "../Map1/YSort"
 var curtimestamp = -1 # timestamp for position updates
 var active: bool = false # bool for if game is active
+var setupcomplete: bool = false
 
 func _ready():
 	get_tree().connect("connected_to_server", self, "connection_success")
@@ -54,7 +55,7 @@ func create_peer_instance(ID, username = "user", avatar = 0, position = Vector2(
 	var instance = Resources.nodes["PeerPlayer"].instance()
 	ysort.add_child(instance)
 	instance.global_position = position
-	instance.name = str(ID)
+	instance.name = username
 	instance.set_username(username)
 	playerinstances[ID] = instance
 	return instance
@@ -102,22 +103,18 @@ remote func disconnect_me(id):
 		playerinstances[id].queue_free()
 		playerinstances.erase(id)
 
-remote func set_all_user_positions(positions: Dictionary):
+remote func set_user_data(userdata: Dictionary):
 	if not active:
 		return
-	for user in positions.keys():
-		if user == uniqueID:
+	for clientID in userdata.keys():
+		if clientID == uniqueID:
 			# skip own position
 			continue
-		if playerinstances.has(user):
-			playerinstances[user].update_player(Vector2(positions[user]["x"],positions[user]["y"]))
-		else:
-			var instance = create_peer_instance(user)
-			instance.update_player(Vector2(positions[user]["x"],positions[user]["y"]))
-	emit_signal("pos_setup")
+		create_peer_instance(clientID, userdata[clientID]["username"], userdata[clientID]["avatar"], Vector2(userdata[clientID]["x"],userdata[clientID]["y"]))
+	setupcomplete = true
 	
 remote func update_all_user_positions(positions: Dictionary, timestamp: int):
-	if not active:
+	if not active or not setupcomplete:
 		return
 	if timestamp < curtimestamp:
 		# reject out of order packets
@@ -132,31 +129,11 @@ remote func update_all_user_positions(positions: Dictionary, timestamp: int):
 			print("new user tried to update with no instance yet")
 	curtimestamp = timestamp
 
-remote func set_all_usernames(usernames: Dictionary):
-	if not active:
-		return
-	yield(self, "pos_setup") # wait until position update is done
-	for user in usernames.keys():
-		if user == uniqueID:
-			# skip own username
-			continue
-		if playerinstances.has(user):
-			playerinstances[user].set_username(usernames[user])
-		else:
-			# ID not found
-			print("Warning: unknown ID tried to set username")
-			print(user)
-			continue
-
-remote func set_all_avatars(avatars: Dictionary):
-	if not active:
-		return
-	# avatars currently only 1
-	pass
-
 remote func add_new_user(userid: int, username: String, avatar: int):
 	if not active:
 		return
+	if not setupcomplete:
+		yield(get_tree(),"idle_frame") # wait if setup not yet complete
 	create_peer_instance(userid, username, avatar)
 
 remote func set_client_emote(userid: int, emote: int):
