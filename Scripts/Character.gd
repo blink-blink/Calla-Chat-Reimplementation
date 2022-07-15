@@ -27,6 +27,9 @@ func _ready():
 	# grab navmesh
 	if get_tree().has_group("MapNavigation"):
 		Navigation2d = get_tree().get_nodes_in_group("MapNavigation")[0]
+		
+func set_avatar(avatar: int):
+	pass
 
 func control(delta): # overwritten to have different implementations based on whether its controlled player or peer player
 	return false	 # should return true if player controlled, false otherwise

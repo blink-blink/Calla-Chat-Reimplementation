@@ -61,14 +61,6 @@ func create_peer_instance(ID, username = "user", avatar = 0, position = Vector2(
 	instance.set_network_master(1)
 	playerinstances[ID] = instance
 	return instance
-	
-func debug_conn_success():
-	# debug function to mimic getting a successful connection	
-	uniqueID = get_tree().get_network_unique_id()
-	var main_instance = create_main_instance(mainplayerusername)
-	register_main_instance(main_instance)
-	active = true
-	var instance = create_peer_instance(1)
 
 func connection_success():
 	# on successful connection, store ID, create and register main instance
@@ -154,3 +146,54 @@ remote func set_client_emote(userid: int, emote: int):
 	if playerinstances.has(userid):
 		var target = playerinstances[userid]
 		target.emote(emote)
+
+func debug_conn_success():
+	# debug function to mimic getting a successful connection	
+	uniqueID = get_tree().get_network_unique_id()
+	var main_instance = create_main_instance(mainplayerusername)
+	register_main_instance(main_instance)
+	active = true
+	var instance = create_peer_instance(1)
+	debug_move_test(instance)
+	
+func debug_move_test(instance):
+	instance.update_player(Vector2(50,0))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(50,0))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(50,0))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(30,0))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(30,0))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(0,30))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(0,30))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(0,30))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(0,30))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(0,30))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(-10,0))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(-10,0))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(-10,0))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(-10,0))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(-10,0))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(-30,-30))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(-30,-30))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(-30,-30))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(-30,-30))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(-30,-30))
+	yield(get_tree().create_timer(0.2), "timeout")
