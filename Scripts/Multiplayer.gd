@@ -67,8 +67,8 @@ func debug_conn_success():
 	uniqueID = get_tree().get_network_unique_id()
 	var main_instance = create_main_instance(mainplayerusername)
 	register_main_instance(main_instance)
+	active = true
 	var instance = create_peer_instance(1)
-	instance.update_player(Vector2(25,0))
 
 func connection_success():
 	# on successful connection, store ID, create and register main instance
