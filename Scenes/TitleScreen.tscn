@@ -35,4 +35,23 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
+[node name="Avatar" type="SpinBox" parent="."]
+margin_left = 520.0
+margin_top = 192.0
+margin_right = 594.0
+margin_bottom = 216.0
+min_value = 1.0
+max_value = 10.0
+value = 1.0
+
+[node name="Label" type="Label" parent="Avatar"]
+margin_left = -113.0
+margin_top = -4.0
+margin_right = -9.0
+margin_bottom = 24.0
+rect_scale = Vector2( 1.2, 1.2 )
+text = "Avatar"
+align = 1
+valign = 1
+
 [connection signal="pressed" from="JoinRoom" to="." method="_on_JoinRoom_pressed"]
