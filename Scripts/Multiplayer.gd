@@ -7,6 +7,7 @@ var serverIP = "192.168.195.1"
 var serverPort = 22552
 var uniqueID # our rpc id
 var mainplayerusername: String # our username
+var mainplayeravatar: int # our chosen avatar
 var mappath = "../Map1/YSort"
 var curtimestamp = -1 # timestamp for position updates
 var active: bool = false # bool for if game is active
@@ -17,13 +18,13 @@ func _ready():
 	get_tree().connect("connection_failed", self, "connection_failure")
 	get_tree().connect("server_disconnected", self, "disconnected")
 
-func start_client(username):
+func start_client(username, avatar):
 	# connect to server
-	
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_client(serverIP, serverPort)
 	get_tree().network_peer = peer
 	mainplayerusername = username
+	mainplayeravatar = avatar
 	get_tree().change_scene_to(Resources.scenes["map1"])
 	# buffer idle frames to make sure map has loaded
 	yield(get_tree(),"idle_frame")
@@ -33,7 +34,7 @@ func start_client(username):
 	# debug_conn_success() # IMPORTANT - REMOVE WHEN TESTING ACTUAL MULTIPLAYER CONNECTIVITY
 	# debug ------------------------------------------------------------------------------
 
-func create_main_instance(username = "user", avatar = 0, position = Vector2(20, 0)):
+func create_main_instance(username = "user", avatar = 1, position = Vector2(20, 0)):
 	var ysort = get_node(mappath)
 	var camera = ysort.get_node("PlayerCamera")
 	var instance = Resources.nodes["ControlledPlayer"].instance()
@@ -41,6 +42,7 @@ func create_main_instance(username = "user", avatar = 0, position = Vector2(20, 
 	instance.global_position = position
 	instance.name = str(uniqueID)
 	instance.set_username(username)
+	instance.set_avatar(avatar)
 	instance.set_network_master(1)
 	camera.set_player(instance)
 	playerinstances[uniqueID] = instance
@@ -50,7 +52,7 @@ func create_main_instance(username = "user", avatar = 0, position = Vector2(20, 
 func register_main_instance(instance):
 	rpc_id(1,"register_client", mainplayerusername, instance.avatar, instance.global_position.x, instance.global_position.y)
 
-func create_peer_instance(ID, username = "user", avatar = 0, position = Vector2(0, 0)):
+func create_peer_instance(ID, username = "user", avatar = 1, position = Vector2(0, 0)):
 	# Grab YSort and add peer instance as child of YSort
 	var ysort = get_node(mappath)
 	var instance = Resources.nodes["PeerPlayer"].instance()
@@ -58,23 +60,16 @@ func create_peer_instance(ID, username = "user", avatar = 0, position = Vector2(
 	instance.global_position = position
 	instance.name = username
 	instance.set_username(username)
+	instance.set_avatar(avatar)
 	instance.set_network_master(1)
 	playerinstances[ID] = instance
 	return instance
-	
-func debug_conn_success():
-	# debug function to mimic getting a successful connection	
-	uniqueID = get_tree().get_network_unique_id()
-	var main_instance = create_main_instance(mainplayerusername)
-	register_main_instance(main_instance)
-	var instance = create_peer_instance(1)
-	instance.update_player(Vector2(25,0))
 
 func connection_success():
 	# on successful connection, store ID, create and register main instance
 	print("connection successful")
 	uniqueID = get_tree().get_network_unique_id()
-	var main_instance = create_main_instance(mainplayerusername)
+	var main_instance = create_main_instance(mainplayerusername, mainplayeravatar)
 	register_main_instance(main_instance)
 	active = true
 
@@ -154,3 +149,54 @@ remote func set_client_emote(userid: int, emote: int):
 	if playerinstances.has(userid):
 		var target = playerinstances[userid]
 		target.emote(emote)
+
+func debug_conn_success():
+	# debug function to mimic getting a successful connection	
+	uniqueID = get_tree().get_network_unique_id()
+	var main_instance = create_main_instance(mainplayerusername, mainplayeravatar)
+	register_main_instance(main_instance)
+	active = true
+	var instance = create_peer_instance(1)
+	debug_move_test(instance)
+	
+func debug_move_test(instance):
+	instance.update_player(Vector2(50,0))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(50,0))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(50,0))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(30,0))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(30,0))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(0,30))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(0,30))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(0,30))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(0,30))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(0,30))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(-10,0))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(-10,0))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(-10,0))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(-10,0))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(-10,0))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(-30,-30))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(-30,-30))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(-30,-30))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(-30,-30))
+	yield(get_tree().create_timer(0.2), "timeout")
+	instance.update_player(Vector2(-30,-30))
+	yield(get_tree().create_timer(0.2), "timeout")
