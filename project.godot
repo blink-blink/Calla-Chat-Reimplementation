@@ -28,6 +28,8 @@ config/icon="res://icon.png"
 
 Resources="*res://Scripts/Resources.gd"
 Multiplayer="*res://Scripts/Multiplayer.gd"
+Pjsip="*res://Scenes/PJSIP.tscn"
+GlobalAudioStreamPlayer="*res://Scenes/AudioStreamPlayer.tscn"
 
 [input]
 

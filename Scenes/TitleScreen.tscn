@@ -5,6 +5,8 @@
 [node name="TitleScreen" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = -3.0
+margin_right = -3.0
 script = ExtResource( 1 )
 
 [node name="UserName" type="LineEdit" parent="."]
@@ -22,15 +24,29 @@ __meta__ = {
 }
 
 [node name="JoinRoom" type="Button" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
+anchor_left = 0.501953
+anchor_top = 0.62
+anchor_right = 0.501953
+anchor_bottom = 0.62
 margin_left = -149.0
 margin_top = 30.0
 margin_right = 149.0
 margin_bottom = 90.0
 text = "Join Room"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="ChooseConfig" type="Button" parent="."]
+anchor_left = 0.501953
+anchor_top = 0.493333
+anchor_right = 0.501953
+anchor_bottom = 0.493333
+margin_left = -149.0
+margin_top = 30.0
+margin_right = 149.0
+margin_bottom = 90.0
+text = "Choose Config File"
 __meta__ = {
 "_edit_use_anchors_": true
 }
@@ -54,4 +70,18 @@ text = "Avatar"
 align = 1
 valign = 1
 
+[node name="FileDialog" type="FileDialog" parent="."]
+margin_left = 123.0
+margin_top = 81.0
+margin_right = 889.0
+margin_bottom = 488.0
+window_title = "Choose Config"
+mode = 0
+access = 2
+filters = PoolStringArray( "*.conf ; Configuration Files" )
+current_dir = "/Users/walte/Documents/Calla Reimplementation"
+current_path = "/Users/walte/Documents/Calla Reimplementation/"
+
 [connection signal="pressed" from="JoinRoom" to="." method="_on_JoinRoom_pressed"]
+[connection signal="pressed" from="ChooseConfig" to="." method="_on_ChooseConfig_pressed"]
+[connection signal="file_selected" from="FileDialog" to="." method="_on_FileDialog_file_selected"]
