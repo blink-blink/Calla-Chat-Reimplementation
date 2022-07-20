@@ -75,12 +75,26 @@ margin_left = 123.0
 margin_top = 81.0
 margin_right = 889.0
 margin_bottom = 488.0
-window_title = "Choose Config"
+window_title = "Open a File"
 mode = 0
 access = 2
 filters = PoolStringArray( "*.conf ; Configuration Files" )
 current_dir = "/Users/walte/Documents/Calla Reimplementation"
 current_path = "/Users/walte/Documents/Calla Reimplementation/"
+
+[node name="ConfigAlert" type="WindowDialog" parent="."]
+margin_left = 332.0
+margin_top = 168.0
+margin_right = 700.0
+margin_bottom = 341.0
+popup_exclusive = true
+
+[node name="Label" type="Label" parent="ConfigAlert"]
+margin_right = 368.0
+margin_bottom = 173.0
+text = "No config file selected!"
+align = 1
+valign = 1
 
 [connection signal="pressed" from="JoinRoom" to="." method="_on_JoinRoom_pressed"]
 [connection signal="pressed" from="ChooseConfig" to="." method="_on_ChooseConfig_pressed"]
