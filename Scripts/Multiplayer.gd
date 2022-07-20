@@ -13,19 +13,22 @@ var curtimestamp = -1 # timestamp for position updates
 var active: bool = false # bool for if game is active
 var setupcomplete: bool = false
 var domain = "192.168.195.1:5060"
+var usernumber : int
 
 func _ready():
 	get_tree().connect("connected_to_server", self, "connection_success")
 	get_tree().connect("connection_failed", self, "connection_failure")
 	get_tree().connect("server_disconnected", self, "disconnected")
 	
-func create_caller(callnumber, password):
-	var callPort = str(int(callnumber) + 29000)
+func create_caller(callnumber:String, password:String):
+	usernumber = int(callnumber)
+	var callPort = usernumber + 29000
 	var debug_output = 1 # 1 for debug output to stdout, 0 for none
 	Pjsip.add_account(callnumber, password, domain, callPort, debug_output)
 	
 func start_call():
-	var call_uri = "sip:1@192.168.195.1:5060"
+	var endpoint = usernumber+498
+	var call_uri = "sip:%s@192.168.195.1:5060" % str(endpoint)
 	Pjsip.make_call(call_uri,GlobalAudioStreamPlayer.stream)
 
 func start_client(username, avatar, callnumber, password):
@@ -82,6 +85,7 @@ func connection_success():
 	uniqueID = get_tree().get_network_unique_id()
 	var main_instance = create_main_instance(mainplayerusername, mainplayeravatar)
 	register_main_instance(main_instance)
+	start_call()
 	active = true
 
 func connection_failure():
