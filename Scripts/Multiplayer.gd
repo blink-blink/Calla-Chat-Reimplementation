@@ -24,10 +24,17 @@ func create_caller(callnumber:String, password:String):
 	usernumber = int(callnumber)
 	var callPort = usernumber + 29000
 	var debug_output = 1 # 1 for debug output to stdout, 0 for none
+	# debug
+	# callnumber = "804"
+	# callPort = 29804
+	# end of debug
 	Pjsip.add_account(callnumber, password, domain, callPort, debug_output)
 	
 func start_call():
 	var endpoint = usernumber+498
+	# debug endpoint
+	# endpoint = 803
+	# end of debug endpoint
 	var call_uri = "sip:%s@192.168.195.1:5060" % str(endpoint)
 	Pjsip.make_call(call_uri,GlobalAudioStreamPlayer.stream)
 
@@ -64,7 +71,7 @@ func create_main_instance(username = "user", avatar = 1, position = Vector2(20, 
 	
 
 func register_main_instance(instance):
-	rpc_id(1,"register_client", mainplayerusername, instance.avatar, instance.global_position.x, instance.global_position.y)
+	rpc_id(1,"register_client", mainplayerusername, mainplayeravatar, instance.global_position.x, instance.global_position.y)
 
 func create_peer_instance(ID, username = "user", avatar = 1, position = Vector2(0, 0)):
 	# Grab YSort and add peer instance as child of YSort
