@@ -30,10 +30,14 @@ func _ready():
 		
 func set_avatar(avatar: int):
 	print(avatar)
+	if not Resources.avatars.has(avatar):
+		# set default of 1 if avatar does not exist
+		avatar = 1
 	var instance = Resources.avatars[avatar].instance()
 	self.add_child(instance)
 	instance.show()
 	sprite = instance
+
 
 func control(delta): # overwritten to have different implementations based on whether its controlled player or peer player
 	return false	 # should return true if player controlled, false otherwise

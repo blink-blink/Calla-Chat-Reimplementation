@@ -79,8 +79,8 @@ window_title = "Open a File"
 mode = 0
 access = 2
 filters = PoolStringArray( "*.conf ; Configuration Files" )
-current_dir = "/Users/walte/Documents/Calla Reimplementation"
-current_path = "/Users/walte/Documents/Calla Reimplementation/"
+current_dir = "/"
+current_path = "/"
 
 [node name="ConfigAlert" type="WindowDialog" parent="."]
 margin_left = 332.0

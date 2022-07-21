@@ -7,7 +7,7 @@ var serverIP = "192.168.195.1"
 var serverPort = 22552
 var uniqueID # our rpc id
 var mainplayerusername: String # our username
-var mainplayeravatar: int # our chosen avatar
+var mainplayeravatar: int = 1 # our chosen avatar
 var mappath = "../Map1/YSort"
 var curtimestamp = -1 # timestamp for position updates
 var active: bool = false # bool for if game is active
@@ -55,6 +55,18 @@ func start_client(username, avatar, callnumber, password):
 	# debug_conn_success() # IMPORTANT - REMOVE WHEN TESTING ACTUAL MULTIPLAYER CONNECTIVITY
 	# debug ------------------------------------------------------------------------------
 
+func start_client_no_call(username, avatar):
+	# connect to server
+	var peer = NetworkedMultiplayerENet.new()
+	peer.create_client(serverIP, serverPort)
+	get_tree().network_peer = peer
+	mainplayerusername = username
+	mainplayeravatar = avatar
+	get_tree().change_scene_to(Resources.scenes["map1"])
+	# buffer idle frames to make sure map has loaded
+	yield(get_tree(),"idle_frame")
+	yield(get_tree(),"idle_frame")
+
 func create_main_instance(username = "user", avatar = 1, position = Vector2(20, 0)):
 	var ysort = get_node(mappath)
 	var camera = ysort.get_node("PlayerCamera")
@@ -92,7 +104,8 @@ func connection_success():
 	uniqueID = get_tree().get_network_unique_id()
 	var main_instance = create_main_instance(mainplayerusername, mainplayeravatar)
 	register_main_instance(main_instance)
-	start_call()
+	if not active:
+		start_call()
 	active = true
 
 func connection_failure():
@@ -108,13 +121,19 @@ func reset_state():
 	setupcomplete = false
 	playerinstances.clear()	
 	mainplayerusername = ""
+	mainplayeravatar = 1
 	curtimestamp = -1
 	uniqueID = null
 	
 func disconnected():
-	print("disconnected")
+	print("disconnected, trying reconnect")
+	var storeusername = mainplayerusername
 	reset_state()
 	get_tree().change_scene_to(Resources.scenes["titlescreen"])
+	yield(get_tree(),"idle_frame")
+	yield(get_tree(),"idle_frame")
+	start_client_no_call(storeusername, mainplayeravatar)
+	
 
 func update_player_position(position: Vector2):
 	if not active:
