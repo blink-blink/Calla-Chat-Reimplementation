@@ -15,7 +15,7 @@ var curtimestamp = -1 # timestamp for position updates
 var active: bool = false # bool for if we send data to server
 var setupcomplete: bool = false # bool for if we are ready to accept further data from server (aside from initial setup)
 var domain = "192.168.195.1:5060"
-var usernumber : int
+var usernumber
 
 func _ready():
 	get_tree().connect("connected_to_server", self, "connection_success")
@@ -106,16 +106,19 @@ func connection_failure():
 func initiate_disconnect():
 	# initiates graceful disconnect
 	rpc_id(1,"disconnect_me", mainplayerpassword)
-	get_tree().network_peer.close_connection()
 	reset_state()
 	
 func reset_state():
 	# resets variables to mimic clean slate of newly opening up app
+	get_tree().network_peer.close_connection()
+	Pjsip.hangup_all_calls()
 	active = false
 	setupcomplete = false
 	playerinstances.clear()	
 	mainplayerusername = ""
 	mainplayeravatar = 1
+	mainplayerpassword = null
+	usernumber = null
 	curtimestamp = -1
 	uniqueID = null
 	
@@ -124,10 +127,8 @@ func disconnected():
 	var storeusername = mainplayerusername
 	reset_state()
 	get_tree().change_scene_to(Resources.scenes["titlescreen"])
-	yield(get_tree(),"idle_frame")
-	yield(get_tree(),"idle_frame")
-	start_client_no_call(storeusername, mainplayeravatar)
-	
+	var alert = get_node("/root/TitleScreen")
+	alert.on_disconnect()
 
 func update_player_position(position: Vector2):
 	if not active:
@@ -182,8 +183,17 @@ remote func set_client_emote(userid: int, emote: int):
 		target.emote(emote)
 		
 remote func reg_status(success: bool):
+	print(success)
 	if success:
 		active = true
 		emit_signal("registered")
 	else:
 		active = false
+		get_tree().network_peer.close_connection()
+		reset_state()
+		get_tree().change_scene_to(Resources.scenes["titlescreen"])
+		yield(get_tree(),"idle_frame")
+		yield(get_tree(),"idle_frame")
+		var alert = get_node("/root/TitleScreen")
+		alert.on_UnsucessfulReg()
+		print("reg unsuccessful")

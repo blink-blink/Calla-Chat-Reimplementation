@@ -26,7 +26,13 @@ func _on_JoinRoom_pressed():
 func _on_ChooseConfig_pressed():
 	filedialog.popup_centered_clamped()
 	
+func on_UnsucessfulReg():
+	configlabel.text = "Unsuccessfull Registration!\n (Mabye someone already has that username)"
+	configalert.popup_centered_clamped()
 
+func on_disconnect():
+	configlabel.text = "Disconnected!"
+	configalert.popup_centered_clamped()
 
 func _on_FileDialog_file_selected(path:String):
 	if path.get_extension() != "conf":
