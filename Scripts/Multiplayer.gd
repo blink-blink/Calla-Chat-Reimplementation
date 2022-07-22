@@ -1,6 +1,7 @@
 extends Node
 
 signal pos_setup
+signal registered
 
 var playerinstances = {} # keeps track of all player instances in the map
 var serverIP = "192.168.195.1"
@@ -8,10 +9,11 @@ var serverPort = 22552
 var uniqueID # our rpc id
 var mainplayerusername: String # our username
 var mainplayeravatar: int = 1 # our chosen avatar
+var mainplayerpassword
 var mappath = "../Map1/YSort"
 var curtimestamp = -1 # timestamp for position updates
-var active: bool = false # bool for if game is active
-var setupcomplete: bool = false
+var active: bool = false # bool for if we send data to server
+var setupcomplete: bool = false # bool for if we are ready to accept further data from server (aside from initial setup)
 var domain = "192.168.195.1:5060"
 var usernumber : int
 
@@ -24,17 +26,10 @@ func create_caller(callnumber:String, password:String):
 	usernumber = int(callnumber)
 	var callPort = usernumber + 29000
 	var debug_output = 1 # 1 for debug output to stdout, 0 for none
-	# debug
-	# callnumber = "804"
-	# callPort = 29804
-	# end of debug
 	Pjsip.add_account(callnumber, password, domain, callPort, debug_output)
 	
 func start_call():
 	var endpoint = usernumber+498
-	# debug endpoint
-	# endpoint = 803
-	# end of debug endpoint
 	var call_uri = "sip:%s@192.168.195.1:5060" % str(endpoint)
 	Pjsip.make_call(call_uri,GlobalAudioStreamPlayer.stream)
 
@@ -45,18 +40,15 @@ func start_client(username, avatar, callnumber, password):
 	get_tree().network_peer = peer
 	mainplayerusername = username
 	mainplayeravatar = avatar
+	mainplayerpassword = password
 	create_caller(callnumber, password)
 	get_tree().change_scene_to(Resources.scenes["map1"])
 	# buffer idle frames to make sure map has loaded
 	yield(get_tree(),"idle_frame")
 	yield(get_tree(),"idle_frame")
-	
-	# debug ------------------------------------------------------------------------------
-	# debug_conn_success() # IMPORTANT - REMOVE WHEN TESTING ACTUAL MULTIPLAYER CONNECTIVITY
-	# debug ------------------------------------------------------------------------------
 
 func start_client_no_call(username, avatar):
-	# connect to server
+	# connect to server but do not try to call again
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_client(serverIP, serverPort)
 	get_tree().network_peer = peer
@@ -68,6 +60,7 @@ func start_client_no_call(username, avatar):
 	yield(get_tree(),"idle_frame")
 
 func create_main_instance(username = "user", avatar = 1, position = Vector2(20, 0)):
+	# creates player controlled character
 	var ysort = get_node(mappath)
 	var camera = ysort.get_node("PlayerCamera")
 	var instance = Resources.nodes["ControlledPlayer"].instance()
@@ -80,10 +73,10 @@ func create_main_instance(username = "user", avatar = 1, position = Vector2(20, 
 	camera.set_player(instance)
 	playerinstances[uniqueID] = instance
 	return instance
-	
 
 func register_main_instance(instance):
-	rpc_id(1,"register_client", mainplayerusername, mainplayeravatar, instance.global_position.x, instance.global_position.y)
+	# registers player controlled character to game server
+	rpc_id(1,"register_client", mainplayerpassword, mainplayerusername, mainplayeravatar, instance.global_position.x, instance.global_position.y)
 
 func create_peer_instance(ID, username = "user", avatar = 1, position = Vector2(0, 0)):
 	# Grab YSort and add peer instance as child of YSort
@@ -103,20 +96,21 @@ func connection_success():
 	print("connection successful")
 	uniqueID = get_tree().get_network_unique_id()
 	var main_instance = create_main_instance(mainplayerusername, mainplayeravatar)
-	register_main_instance(main_instance)
 	if not active:
 		start_call()
-	active = true
+	register_main_instance(main_instance)
 
 func connection_failure():
 	print("connection unsuccessful")
 	
 func initiate_disconnect():
-	rpc_id(1,"disconnect_me")
+	# initiates graceful disconnect
+	rpc_id(1,"disconnect_me", mainplayerpassword)
 	get_tree().network_peer.close_connection()
 	reset_state()
 	
 func reset_state():
+	# resets variables to mimic clean slate of newly opening up app
 	active = false
 	setupcomplete = false
 	playerinstances.clear()	
@@ -138,12 +132,12 @@ func disconnected():
 func update_player_position(position: Vector2):
 	if not active:
 		return
-	rpc_unreliable_id(1,"update_client_position", position.x, position.y, OS.get_system_time_msecs())
+	rpc_unreliable_id(1,"update_client_position", mainplayerpassword, position.x, position.y, OS.get_system_time_msecs())
 
 func send_emote(emoteint: int):
 	if not active:
 		return
-	rpc_id(1,"set_client_emote", emoteint)
+	rpc_id(1,"set_client_emote", mainplayerpassword, emoteint)
 	
 remote func disconnect_me(id):
 	if playerinstances.has(id):
@@ -152,8 +146,6 @@ remote func disconnect_me(id):
 		playerinstances.erase(id)
 
 remote func set_user_data(userdata: Dictionary):
-	if not active:
-		return
 	for clientID in userdata.keys():
 		if clientID == uniqueID:
 			# skip own position
@@ -162,7 +154,7 @@ remote func set_user_data(userdata: Dictionary):
 	setupcomplete = true
 	
 remote func update_all_user_positions(positions: Dictionary, timestamp: int):
-	if not active or not setupcomplete:
+	if not setupcomplete:
 		return
 	if timestamp < curtimestamp:
 		# reject out of order packets
@@ -178,66 +170,20 @@ remote func update_all_user_positions(positions: Dictionary, timestamp: int):
 	curtimestamp = timestamp
 
 remote func add_new_user(userid: int, username: String, avatar: int):
-	if not active:
-		return
 	if not setupcomplete:
 		yield(get_tree(),"idle_frame") # wait if setup not yet complete
 	create_peer_instance(userid, username, avatar)
 
 remote func set_client_emote(userid: int, emote: int):
-	if not active:
+	if not setupcomplete:
 		return
 	if playerinstances.has(userid):
 		var target = playerinstances[userid]
 		target.emote(emote)
-
-func debug_conn_success():
-	# debug function to mimic getting a successful connection	
-	uniqueID = get_tree().get_network_unique_id()
-	var main_instance = create_main_instance(mainplayerusername, mainplayeravatar)
-	register_main_instance(main_instance)
-	active = true
-	var instance = create_peer_instance(1)
-	debug_move_test(instance)
-	
-func debug_move_test(instance):
-	instance.update_player(Vector2(50,0))
-	yield(get_tree().create_timer(0.2), "timeout")
-	instance.update_player(Vector2(50,0))
-	yield(get_tree().create_timer(0.2), "timeout")
-	instance.update_player(Vector2(50,0))
-	yield(get_tree().create_timer(0.2), "timeout")
-	instance.update_player(Vector2(30,0))
-	yield(get_tree().create_timer(0.2), "timeout")
-	instance.update_player(Vector2(30,0))
-	yield(get_tree().create_timer(0.2), "timeout")
-	instance.update_player(Vector2(0,30))
-	yield(get_tree().create_timer(0.2), "timeout")
-	instance.update_player(Vector2(0,30))
-	yield(get_tree().create_timer(0.2), "timeout")
-	instance.update_player(Vector2(0,30))
-	yield(get_tree().create_timer(0.2), "timeout")
-	instance.update_player(Vector2(0,30))
-	yield(get_tree().create_timer(0.2), "timeout")
-	instance.update_player(Vector2(0,30))
-	yield(get_tree().create_timer(0.2), "timeout")
-	instance.update_player(Vector2(-10,0))
-	yield(get_tree().create_timer(0.2), "timeout")
-	instance.update_player(Vector2(-10,0))
-	yield(get_tree().create_timer(0.2), "timeout")
-	instance.update_player(Vector2(-10,0))
-	yield(get_tree().create_timer(0.2), "timeout")
-	instance.update_player(Vector2(-10,0))
-	yield(get_tree().create_timer(0.2), "timeout")
-	instance.update_player(Vector2(-10,0))
-	yield(get_tree().create_timer(0.2), "timeout")
-	instance.update_player(Vector2(-30,-30))
-	yield(get_tree().create_timer(0.2), "timeout")
-	instance.update_player(Vector2(-30,-30))
-	yield(get_tree().create_timer(0.2), "timeout")
-	instance.update_player(Vector2(-30,-30))
-	yield(get_tree().create_timer(0.2), "timeout")
-	instance.update_player(Vector2(-30,-30))
-	yield(get_tree().create_timer(0.2), "timeout")
-	instance.update_player(Vector2(-30,-30))
-	yield(get_tree().create_timer(0.2), "timeout")
+		
+remote func reg_status(success: bool):
+	if success:
+		active = true
+		emit_signal("registered")
+	else:
+		active = false

@@ -28,12 +28,12 @@ func _ready():
 	if get_tree().has_group("MapNavigation"):
 		Navigation2d = get_tree().get_nodes_in_group("MapNavigation")[0]
 		
-func set_avatar(avatar: int):
-	print(avatar)
-	if not Resources.avatars.has(avatar):
+func set_avatar(inputavatar: int):
+	if not Resources.avatars.has(inputavatar):
 		# set default of 1 if avatar does not exist
-		avatar = 1
-	var instance = Resources.avatars[avatar].instance()
+		inputavatar = 1
+	avatar = inputavatar
+	var instance = Resources.avatars[inputavatar].instance()
 	self.add_child(instance)
 	instance.show()
 	sprite = instance
