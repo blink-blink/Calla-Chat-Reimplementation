@@ -8,7 +8,7 @@ const CLIENT_TICK_RATE =  0.2
 const SERVER_TICK_RATE = 0.2 # set this to the server's tick rate, or request tickrate from server
 var tick = 0
 
-onready var sprite = $AnimatedSprite
+var sprite
 onready var speechbubble = $SpeechBubble
 
 var username
@@ -27,6 +27,13 @@ func _ready():
 	# grab navmesh
 	if get_tree().has_group("MapNavigation"):
 		Navigation2d = get_tree().get_nodes_in_group("MapNavigation")[0]
+		
+func set_avatar(avatar: int):
+	print(avatar)
+	var instance = Resources.avatars[avatar].instance()
+	self.add_child(instance)
+	instance.show()
+	sprite = instance
 
 func control(delta): # overwritten to have different implementations based on whether its controlled player or peer player
 	return false	 # should return true if player controlled, false otherwise
@@ -66,6 +73,9 @@ func send_position():
 	Multiplayer.update_player_position(self.global_position)
 
 func animate():
+	if not sprite:
+		# no set avatar yet
+		return
 	# sprite animations
 	if vel.length_squared() < 0.01:
 		# idle frame

@@ -4,6 +4,7 @@ extends Node
 var emotes = {}
 var scenes = {}
 var nodes = {}
+var avatars = {}
 
 func _ready():
 	emotes["check"] = preload("res://Assets/UI/Emotes/check.png")
@@ -18,3 +19,5 @@ func _ready():
 	scenes["titlescreen"] = preload("res://Scenes/TitleScreen.tscn")
 	nodes["ControlledPlayer"] = preload("res://Scenes/ControlledPlayer.tscn")
 	nodes["PeerPlayer"] = preload("res://Scenes/PeerPlayer.tscn")
+	avatars[1] = preload("res://Scenes/Avatars/Avatar1.tscn")
+	avatars[2] = preload("res://Scenes/Avatars/Avatar2.tscn")
