@@ -97,7 +97,9 @@ func connection_success():
 	uniqueID = get_tree().get_network_unique_id()
 	var main_instance = create_main_instance(mainplayerusername, mainplayeravatar)
 	if not active:
-		start_call()
+		pass
+		#client makes the call
+		#start_call()
 	register_main_instance(main_instance)
 
 func connection_failure():
