@@ -11,7 +11,7 @@
 [ext_resource path="res://Assets/UI/Emotes/party.png" type="Texture" id=9]
 [ext_resource path="res://Scripts/Emote Panel.gd" type="Script" id=10]
 [ext_resource path="res://Assets/Fonts/prstarttheme.tres" type="Theme" id=11]
-[ext_resource path="res://Scenes/OptionsPanel.gd" type="Script" id=12]
+[ext_resource path="res://Scripts/OptionsPanel.gd" type="Script" id=12]
 
 [node name="GUI" type="CanvasLayer"]
 
