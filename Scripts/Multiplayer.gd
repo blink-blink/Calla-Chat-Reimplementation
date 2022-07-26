@@ -26,7 +26,10 @@ func create_caller(callnumber:String, password:String):
 	usernumber = int(callnumber)
 	var callPort = usernumber + 29000
 	var debug_output = 1 # 1 for debug output to stdout, 0 for none
-	Pjsip.add_account(callnumber, password, domain, callPort, debug_output)
+	
+	print(callPort)
+	Pjsip.initialize_endpoint(callPort, debug_output)
+	Pjsip.add_account(callnumber, password, domain)
 	
 func start_call():
 	var endpoint = usernumber+498
