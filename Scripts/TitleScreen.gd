@@ -1,6 +1,7 @@
 extends Control
 
 onready var usernamefield = get_node("UserName")
+onready var roomnamefield = get_node("RoomName")
 onready var avatarfield = get_node("Avatar")
 onready var filedialog = get_node("FileDialog")
 onready var configalert = get_node("ConfigAlert")
@@ -10,13 +11,19 @@ var usernumber
 # function for when join room button is pressed
 func _on_JoinRoom_pressed():
 	var username
+	var roomname
 	var avatar = avatarfield.value
 	if usernamefield.text == "":
 		username = "user"
 	else:
 		username = usernamefield.text
+	if roomnamefield.text == "":
+		configlabel.text = "Enter a room name!"
+		configalert.popup_centered_clamped()
+	else:
+		roomname = roomnamefield.text
 	if usernumber and password:
-		Multiplayer.start_client(username, avatar, usernumber, password)
+		Multiplayer.start_client(username, avatar, usernumber, password, roomname)
 	else:
 		configlabel.text = "No config file selected!"
 		configalert.popup_centered_clamped()

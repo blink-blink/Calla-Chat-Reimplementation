@@ -10,6 +10,7 @@ var uniqueID # our rpc id
 var mainplayerusername: String # our username
 var mainplayeravatar: int = 1 # our chosen avatar
 var mainplayerpassword
+var mainplayerroomname: String
 var mappath = "../Map1/YSort"
 var curtimestamp = -1 # timestamp for position updates
 var active: bool = false # bool for if we send data to server
@@ -36,7 +37,7 @@ func start_call():
 	var call_uri = "sip:%s@192.168.195.1:5060" % str(endpoint)
 	Pjsip.make_call(call_uri,GlobalAudioStreamPlayer.stream)
 
-func start_client(username, avatar, callnumber, password):
+func start_client(username, avatar, callnumber, password, roomname):
 	# connect to server
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_client(serverIP, serverPort)
@@ -44,6 +45,7 @@ func start_client(username, avatar, callnumber, password):
 	mainplayerusername = username
 	mainplayeravatar = avatar
 	mainplayerpassword = password
+	mainplayerroomname = roomname
 	create_caller(callnumber, password)
 	get_tree().change_scene_to(Resources.scenes["map1"])
 	# buffer idle frames to make sure map has loaded
@@ -79,7 +81,7 @@ func create_main_instance(username = "user", avatar = 1, position = Vector2(20, 
 
 func register_main_instance(instance):
 	# registers player controlled character to game server
-	rpc_id(1,"register_client", mainplayerpassword, mainplayerusername, mainplayeravatar, instance.global_position.x, instance.global_position.y)
+	rpc_id(1,"register_client", mainplayerpassword, mainplayerusername, mainplayeravatar, instance.global_position.x, instance.global_position.y, mainplayerroomname)
 
 func create_peer_instance(ID, username = "user", avatar = 1, position = Vector2(0, 0)):
 	# Grab YSort and add peer instance as child of YSort
@@ -123,6 +125,7 @@ func reset_state():
 	mainplayerusername = ""
 	mainplayeravatar = 1
 	mainplayerpassword = null
+	mainplayerroomname = ""
 	usernumber = null
 	curtimestamp = -1
 	uniqueID = null
