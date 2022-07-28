@@ -30,6 +30,7 @@ func create_caller(callnumber:String, password:String):
 	print(callPort)
 	Pjsip.initialize_endpoint(callPort, debug_output)
 	Pjsip.add_account(callnumber, password, domain)
+	Pjsip.buffer_incoming_call_to_stream(GlobalAudioStreamPlayer.get_stream_playback())
 	
 func start_call():
 	var endpoint = usernumber+498
