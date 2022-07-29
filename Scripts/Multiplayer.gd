@@ -134,6 +134,8 @@ func disconnected():
 	reset_state()
 	get_tree().change_scene_to(Resources.scenes["titlescreen"])
 	var alert = get_node("/root/TitleScreen")
+	yield(get_tree(),"idle_frame")
+	yield(get_tree(),"idle_frame")
 	alert.on_disconnect()
 
 func update_player_position(position: Vector2):
