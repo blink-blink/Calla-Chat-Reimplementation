@@ -15,6 +15,7 @@ var emotearray = [] # index of emote is its integer representation
 
 
 func _ready():
+	# ready an array of emotes to be used
 	emotearray.append(null)
 	emotearray.append(clap)
 	emotearray.append(check)

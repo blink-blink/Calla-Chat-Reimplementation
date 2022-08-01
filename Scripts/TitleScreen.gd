@@ -10,6 +10,7 @@ var password
 var usernumber
 # function for when join room button is pressed
 func _on_JoinRoom_pressed():
+	# grabs all entered details in titlescreen and sends them to Multiplayer node to actually start client
 	var username
 	var roomname
 	var avatar = avatarfield.value
@@ -34,14 +35,17 @@ func _on_ChooseConfig_pressed():
 	filedialog.popup_centered_clamped()
 	
 func on_UnsucessfulReg():
+	# pop up for unsuccessful registration
 	configlabel.text = "Unsuccessfull Registration!\n (Mabye someone already has that username)"
 	configalert.popup_centered_clamped()
 
 func on_disconnect():
+	# pop up for getting disconnected
 	configlabel.text = "Disconnected!"
 	configalert.popup_centered_clamped()
 
 func _on_FileDialog_file_selected(path:String):
+	# validation for file being selected for config file
 	if path.get_extension() != "conf":
 		configlabel.text = "Invalid config file selected!"
 		configalert.popup_centered_clamped()

@@ -43,9 +43,11 @@ func control(delta): # overwritten to have different implementations based on wh
 	return false	 # should return true if player controlled, false otherwise
 
 func generate_path(start: Vector2, end: Vector2):
+	# generates a path using the navmesh from start coords to end coords, true is passed to make sure path is optimized
 	path = Navigation2d.get_simple_path(start, end, true)
 
 func traverse_path(delta):
+	# called to move character along the path
 	if path.size() > 0:
 		vel = global_position.direction_to(path[0])
 		
@@ -98,6 +100,7 @@ func animate():
 			sprite.play("run left")
 
 func emote(emote):
+	# function called to call actual emote function in speechbubble node
 	speechbubble.startEmote(emote)
 
 func set_username(name):

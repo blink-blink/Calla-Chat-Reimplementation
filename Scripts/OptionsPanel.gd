@@ -15,7 +15,7 @@ func _on_Button_pressed():
 
 
 func _on_HSlider_value_changed(value):
-	#volumeslider signal
+	# volumeslider, changes volume of call and converts linear values to db and vice versa for user friendliness
 	GlobalAudioStreamPlayer.volume_db = linear2db(value)
 	var valuelabel = volumeslide.get_child(1)
 	valuelabel.text = str(value)
