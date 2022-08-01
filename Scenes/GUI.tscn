@@ -144,32 +144,39 @@ script = ExtResource( 12 )
 [node name="VBoxContainer" type="VBoxContainer" parent="OptionsPanel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 70.0
+margin_top = 45.0
+margin_right = -70.0
+margin_bottom = -40.0
 theme = ExtResource( 11 )
 custom_constants/separation = 14
 
 [node name="VolumeSlider" type="HSlider" parent="OptionsPanel/VBoxContainer"]
-margin_right = 463.0
+margin_right = 323.0
 margin_bottom = 16.0
+max_value = 2.0
+step = 0.01
+value = 1.0
 
 [node name="Label" type="Label" parent="OptionsPanel/VBoxContainer/VolumeSlider"]
-margin_left = -81.0
+margin_left = -59.0
 margin_top = 4.0
-margin_right = -33.0
+margin_right = -11.0
 margin_bottom = 12.0
 text = "Volume"
 
 [node name="Value" type="Label" parent="OptionsPanel/VBoxContainer/VolumeSlider"]
-margin_left = 297.0
+margin_left = 338.0
 margin_top = 3.0
-margin_right = 337.0
+margin_right = 378.0
 margin_bottom = 11.0
 text = "0"
 
 [node name="Label" type="Label" parent="OptionsPanel"]
 margin_left = 200.0
-margin_top = 7.0
+margin_top = 11.0
 margin_right = 256.0
-margin_bottom = 15.0
+margin_bottom = 19.0
 text = "Options"
 align = 1
 valign = 1
