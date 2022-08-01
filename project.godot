@@ -24,6 +24,11 @@ config/name="Calla Reimplementation"
 run/main_scene="res://Scenes/TitleScreen.tscn"
 config/icon="res://icon.png"
 
+[audio]
+
+enable_audio_input=true
+mix_rate=16000
+
 [autoload]
 
 Resources="*res://Scripts/Resources.gd"

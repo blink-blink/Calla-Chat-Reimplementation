@@ -31,6 +31,7 @@ func create_caller(callnumber:String, password:String):
 	print(callPort)
 	Pjsip.initialize_endpoint(callPort, debug_output)
 	Pjsip.add_account(callnumber, password, domain)
+	Pjsip.buffer_incoming_call_to_stream(GlobalAudioStreamPlayer.get_stream_playback())
 	
 func start_call():
 	var endpoint = usernumber+498
@@ -119,6 +120,7 @@ func reset_state():
 	# resets variables to mimic clean slate of newly opening up app
 	get_tree().network_peer.close_connection()
 	Pjsip.hangup_all_calls()
+	GlobalAudioStreamPlayer.is_calling = false
 	active = false
 	setupcomplete = false
 	playerinstances.clear()	
@@ -135,6 +137,8 @@ func disconnected():
 	var storeusername = mainplayerusername
 	reset_state()
 	get_tree().change_scene_to(Resources.scenes["titlescreen"])
+	yield(get_tree(),"idle_frame")
+	yield(get_tree(),"idle_frame")
 	var alert = get_node("/root/TitleScreen")
 	alert.on_disconnect()
 
