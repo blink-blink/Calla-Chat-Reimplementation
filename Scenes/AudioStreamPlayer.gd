@@ -37,7 +37,7 @@ func stream_capture(params: Array):
 	var aec = params[0]
 	var call_idx = params[1]
 	
-	var usec_delay = 1000
+	var usec_delay = 20000
 	while is_calling:
 		var msec_start = OS.get_system_time_msecs()
 		

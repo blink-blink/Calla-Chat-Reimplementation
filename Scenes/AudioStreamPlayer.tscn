@@ -9,6 +9,7 @@ mix_rate = 16000.0
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer"]
 stream = SubResource( 1 )
+bus = "Incoming"
 script = ExtResource( 1 )
 
 [node name="AudioStreamMicrophone" type="AudioStreamPlayer" parent="."]
