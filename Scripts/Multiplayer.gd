@@ -133,6 +133,8 @@ func disconnected():
 	var storeusername = mainplayerusername
 	reset_state()
 	get_tree().change_scene_to(Resources.scenes["titlescreen"])
+	yield(get_tree(),"idle_frame")
+	yield(get_tree(),"idle_frame")
 	var alert = get_node("/root/TitleScreen")
 	alert.on_disconnect()
 
