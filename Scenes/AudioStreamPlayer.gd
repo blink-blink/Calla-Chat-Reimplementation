@@ -13,6 +13,7 @@ func _PJSIP_on_incoming_call(call_idx):
 	print("incoming call: ", call_idx)
 	incoming_call_idx = call_idx
 	play()
+	Pjsip.set_stereo(call_idx, true)
 	
 	#re-add playback to incoming call buffer
 	Pjsip.buffer_incoming_call_to_stream(get_stream_playback())
