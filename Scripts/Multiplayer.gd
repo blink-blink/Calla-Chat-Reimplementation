@@ -4,8 +4,8 @@ signal pos_setup
 signal registered
 
 var playerinstances = {} # keeps track of all player instances in the map
-var serverIP = "192.168.195.1"
-var serverPort = 22552
+var serverIP = "192.168.192.1"
+var serverPort: int
 var uniqueID # our rpc id
 var mainplayerusername: String # our username
 var mainplayeravatar: int = 1 # our chosen avatar
@@ -15,7 +15,7 @@ var mappath = "../Map1/YSort"
 var curtimestamp = -1 # timestamp for position updates
 var active: bool = false # bool for if we send data to server
 var setupcomplete: bool = false # bool for if we are ready to accept further data from server (aside from initial setup)
-var domain = "192.168.195.1:5060"
+var domain = "192.168.192.1:5060"
 var usernumber
 
 func _ready():
@@ -23,23 +23,21 @@ func _ready():
 	get_tree().connect("connection_failed", self, "connection_failure")
 	get_tree().connect("server_disconnected", self, "disconnected")
 	
-func create_caller(callnumber:String, password:String):
-	usernumber = int(callnumber)
-	var callPort = usernumber + 29000
+func create_caller(callnumber:int, password:String):
+	var callPort = callnumber + 30000
 	var debug_output = 1 # 1 for debug output to stdout, 0 for none
-	
 	print(callPort)
 	Pjsip.initialize_endpoint(callPort, debug_output)
 	Pjsip.add_account(callnumber, password, domain)
 	Pjsip.buffer_incoming_call_to_stream(GlobalAudioStreamPlayer.get_stream_playback())
-	
-func start_call():
-	var endpoint = usernumber+498
-	var call_uri = "sip:%s@192.168.195.1:5060" % str(endpoint)
-	Pjsip.make_call(call_uri,GlobalAudioStreamPlayer.stream)
 
-func start_client(username, avatar, callnumber, password, roomname):
+func start_client(username, avatar, ipaddr, password, roomname):
 	# connect to server
+	serverPort = TcpClient.get_room_port(roomname)
+	if serverPort == -1:
+		var titlescreen = get_node("../TitleScreen")
+		titlescreen.popup("Getting server port failed! (Returned -1)")
+		return
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_client(serverIP, serverPort)
 	get_tree().network_peer = peer
@@ -47,11 +45,17 @@ func start_client(username, avatar, callnumber, password, roomname):
 	mainplayeravatar = avatar
 	mainplayerpassword = password
 	mainplayerroomname = roomname
+	var callnumber = get_endpoint(ipaddr)
 	create_caller(callnumber, password)
 	get_tree().change_scene_to(Resources.scenes["map1"])
 	# buffer idle frames to make sure map has loaded
 	yield(get_tree(),"idle_frame")
 	yield(get_tree(),"idle_frame")
+
+func get_endpoint(ipaddr) -> int:
+	ipaddr.split(".")
+	var thirdnum = int(ipaddr[2])
+	return ((thirdnum-192)*254)+9999
 
 func create_main_instance(username = "user", avatar = 1, position = Vector2(20, 0)):
 	# creates player controlled character
@@ -90,10 +94,6 @@ func connection_success():
 	print("connection successful")
 	uniqueID = get_tree().get_network_unique_id()
 	var main_instance = create_main_instance(mainplayerusername, mainplayeravatar)
-	if not active:
-		pass
-		#client makes the call
-		#start_call()
 	register_main_instance(main_instance)
 
 func connection_failure():

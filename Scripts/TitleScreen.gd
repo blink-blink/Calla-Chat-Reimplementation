@@ -7,7 +7,7 @@ onready var filedialog = get_node("FileDialog")
 onready var configalert = get_node("ConfigAlert")
 onready var configlabel = get_node("ConfigAlert/Label")
 var password
-var usernumber
+var ipaddr
 # function for when join room button is pressed
 func _on_JoinRoom_pressed():
 	var username
@@ -22,8 +22,8 @@ func _on_JoinRoom_pressed():
 		configalert.popup_centered_clamped()
 	else:
 		roomname = roomnamefield.text
-	if usernumber and password:
-		Multiplayer.start_client(username, avatar, usernumber, password, roomname)
+	if ipaddr and password:
+		Multiplayer.start_client(username, avatar, ipaddr, password, roomname)
 	else:
 		configlabel.text = "No config file selected!"
 		configalert.popup_centered_clamped()
@@ -37,6 +37,10 @@ func on_UnsucessfulReg():
 	configlabel.text = "Unsuccessfull Registration!\n (Mabye someone already has that username)"
 	configalert.popup_centered_clamped()
 
+func popup(msg):
+	configlabel.text = msg
+	configalert.popup_centered_clamped()
+	
 func on_disconnect():
 	configlabel.text = "Disconnected!"
 	configalert.popup_centered_clamped()
@@ -52,5 +56,5 @@ func _on_FileDialog_file_selected(path:String):
 	var splitlines = content.split("\n")
 	# Hardcoded config parsing
 	password = splitlines[0].substr(10).strip_edges()
-	var address = splitlines[2].substr(10).strip_edges()
-	usernumber = str(int(address.trim_suffix("/24").split(".")[3])+198)
+	ipaddr = splitlines[2].substr(10).strip_edges().trim_suffix("/24")
+	print(ipaddr)
