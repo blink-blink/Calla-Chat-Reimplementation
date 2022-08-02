@@ -53,18 +53,6 @@ func start_client(username, avatar, callnumber, password, roomname):
 	yield(get_tree(),"idle_frame")
 	yield(get_tree(),"idle_frame")
 
-func start_client_no_call(username, avatar):
-	# connect to server but do not try to call again
-	var peer = NetworkedMultiplayerENet.new()
-	peer.create_client(serverIP, serverPort)
-	get_tree().network_peer = peer
-	mainplayerusername = username
-	mainplayeravatar = avatar
-	get_tree().change_scene_to(Resources.scenes["map1"])
-	# buffer idle frames to make sure map has loaded
-	yield(get_tree(),"idle_frame")
-	yield(get_tree(),"idle_frame")
-
 func create_main_instance(username = "user", avatar = 1, position = Vector2(20, 0)):
 	# creates player controlled character
 	var ysort = get_node(mappath)
@@ -82,7 +70,7 @@ func create_main_instance(username = "user", avatar = 1, position = Vector2(20, 
 
 func register_main_instance(instance):
 	# registers player controlled character to game server
-	rpc_id(1,"register_client", mainplayerpassword, mainplayerusername, mainplayeravatar, instance.global_position.x, instance.global_position.y, mainplayerroomname)
+	rpc_id(1,"register_client", mainplayerpassword, mainplayerusername, mainplayeravatar, instance.global_position.x, instance.global_position.y)
 
 func create_peer_instance(ID, username = "user", avatar = 1, position = Vector2(0, 0)):
 	# Grab YSort and add peer instance as child of YSort
