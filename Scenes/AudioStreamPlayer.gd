@@ -38,13 +38,15 @@ func stream_capture(params: Array):
 	var call_idx = params[1]
 	
 	var usec_delay = 20000
+	var max_frame_length = 640
 	while is_calling:
 		var msec_start = OS.get_system_time_msecs()
 		
 		var frames_available = aec.get_frames_available()
-		if frames_available >= 320:
-			var buffer = aec.get_buffer(320)
+		while frames_available >= max_frame_length:
+			var buffer = aec.get_buffer(max_frame_length)
 			Pjsip.push_frame(buffer, call_idx)
+			frames_available -= max_frame_length
 		
 		var msec_taken = OS.get_system_time_msecs() - msec_start
 		if msec_taken*1000 < usec_delay:
