@@ -28,12 +28,16 @@ func _ready():
 	if get_tree().has_group("MapNavigation"):
 		Navigation2d = get_tree().get_nodes_in_group("MapNavigation")[0]
 		
-func set_avatar(avatar: int):
-	print(avatar)
-	var instance = Resources.avatars[avatar].instance()
+func set_avatar(inputavatar: int):
+	if not Resources.avatars.has(inputavatar):
+		# set default of 1 if avatar does not exist
+		inputavatar = 1
+	avatar = inputavatar
+	var instance = Resources.avatars[inputavatar].instance()
 	self.add_child(instance)
 	instance.show()
 	sprite = instance
+
 
 func control(delta): # overwritten to have different implementations based on whether its controlled player or peer player
 	return false	 # should return true if player controlled, false otherwise
