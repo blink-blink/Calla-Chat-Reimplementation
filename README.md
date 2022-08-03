@@ -1,4 +1,4 @@
 # Calla-Chat-Reimplementation
 Calla reimplementation in godot
 
-Clone Repository or downlaod as ZIP and import project using Godot Engine to get started
+Clone the repository or download as ZIP and import the project using Godot Engine to get started
